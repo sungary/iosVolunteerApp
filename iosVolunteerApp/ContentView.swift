@@ -8,9 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    
-    @Environment(\.managedObjectContext) var moc
-    @FetchRequest(sortDescriptors: []) var items: FetchedResults<Listing>
+    @EnvironmentObject var firestoreManager: FirestoreManager
     
     @State private var isSideBarOpen = false
     @ObservedObject var navigationManager: SideBarNavigationManager =  SideBarNavigationManager()
@@ -46,5 +44,6 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
+            .environmentObject(FirestoreManager())
     }
 }

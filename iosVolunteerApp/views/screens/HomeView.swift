@@ -7,41 +7,49 @@
 
 import SwiftUI
 
+
 struct HomeView: View {
-    
-    @Environment(\.managedObjectContext) var moc
-    @FetchRequest(sortDescriptors: []) var items: FetchedResults<Listing>
-    
-    @State private var isAddOverlay = false
+    @EnvironmentObject var firestoreManager: FirestoreManager
+
     
     var body: some View {
         ZStack {
             NavigationView {
                 VStack {
-                    List(items){ item in
-                        HStack(alignment: .center, spacing: nil) {
+                    List(firestoreManager.listings) { listing in
+                        HStack {
                             Image(systemName: "star")
-                                .padding(.leading,10)
-                            VStack(alignment: .leading, spacing: nil) {
-                                Text(item.name ?? "default name")
-                                    .font(.headline)
+                                .padding(.leading,15)
+                            VStack(alignment: .leading) {
+                                Text(listing.name)
+                                Text(listing.sDescription)
                             }
                             .padding()
-                            
                         }
+                        
                     }
+                    .onAppear(){
+                        self.firestoreManager.fetchListings()
+                    }
+                    .refreshable {
+                        self.firestoreManager.fetchListings()
+                    }
+
                 }
                 .navigationBarTitle("Home", displayMode: .large)
+                
             }
             .buttonStyle(.bordered)
             .font(.headline.bold())
             
         }
+        
     }
 }
 
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
         HomeView()
+            .environmentObject(FirestoreManager())
     }
 }
