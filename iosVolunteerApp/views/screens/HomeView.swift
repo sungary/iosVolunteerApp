@@ -26,7 +26,6 @@ struct HomeView: View {
                             }
                             .padding()
                         }
-                        //test 
                     }
                     .onAppear(){
                         self.firestoreManager.fetchListings()
