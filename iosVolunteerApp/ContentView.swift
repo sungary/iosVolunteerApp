@@ -8,19 +8,38 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    @Environment(\.managedObjectContext) var moc
+    @FetchRequest(sortDescriptors: []) var items: FetchedResults<Listing>
+    
+    @State private var isSideBarOpen = false
+    @ObservedObject var navigationManager: SideBarNavigationManager =  SideBarNavigationManager()
+    
     var body: some View {
-        ZStack {
-            Color.init(red: 163/255, green: 208/255, blue: 253/255)
-            VStack {
-                Image(systemName: "globe")
-                    .imageScale(.large)
-                    .foregroundColor(.accentColor)
-                Text("Hello, world!")
-            }
-            .padding()
-            
-        }
         
+        ZStack {
+            NavigationView {
+                VStack {
+                    switch navigationManager.viewType{
+                    case .home:
+                        HomeView()
+                    case .myTemp:
+                        Text("test 1")
+                    case .settings:
+                        Text("test")
+                    }
+                }
+                .navigationBarItems(
+                    trailing:
+                        Button {
+                            isSideBarOpen.toggle()
+                        } label: {
+                            Label("Toggle SideBar", systemImage: "line.3.horizontal")
+                        }
+                )
+            }
+            SideBar(isSideBarVisible: self.$isSideBarOpen, navigationManager: self.navigationManager)
+        }
     }
 }
 
