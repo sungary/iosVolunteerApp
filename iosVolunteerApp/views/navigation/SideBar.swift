@@ -16,7 +16,7 @@ var menuData: [MenuItem] = [
 struct SideBar: View {
     @Binding var isSideBarVisible: Bool
     var navigationManager: SideBarNavigationManager
-    var sideBarWidth = UIScreen.main.bounds.size.width * 0.7
+    var sideBarWidth = UIScreen.main.bounds.size.width * 0.55
     var backgroundColor: Color = Color.blue
     
     var body: some View {

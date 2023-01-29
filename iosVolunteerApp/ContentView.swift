@@ -36,6 +36,12 @@ struct ContentView: View {
                         }
                 )
             }
+//            .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .local)
+//                .onEnded({ value in
+//                    if(value.translation.width > 0){
+//                        isSideBarOpen.toggle()
+//                    }
+//                }))
             SideBar(isSideBarVisible: self.$isSideBarOpen, navigationManager: self.navigationManager)
         }
     }
