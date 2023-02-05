@@ -60,11 +60,10 @@ class FirestoreManager: ObservableObject {
         } else {
             return "error"
         }
-        
-        
         return result
     }
     
+    //create a new document for the new user
     func createNewUserInfo(user: User) {
         let db = Firestore.firestore()
         let docRef = db.collection("users").document(user.id)
@@ -76,25 +75,38 @@ class FirestoreManager: ObservableObject {
             }
         }
         
-
+        
     }
     
-    func signIn(email: String, password: String) -> String {
+    @MainActor
+    func signIn(email: String, password: String) async -> User {
         
+        var user = User(id: "", email: "", fname: "", lname: "", type: "")
         
-        var result = ""
-        Auth.auth().signIn(withEmail: email, password: password) { [weak self] authResult, error in
-//            guard let strongSelf = self else { return }
-            if(error != nil){
-                //print(error?.localizedDescription ?? "")
-                result = error?.localizedDescription ?? ""
-            } else {
-                //print("success")
-                result = "success"
+        do {
+            let authResult = try await Auth.auth().signIn(withEmail: email, password: password)
+            
+            do {
+                let document = try await Firestore.firestore().collection("users").document(authResult.user.uid).getDocument()
+                let data = document.data()
+                if(data != nil){
+                    user = User(
+                        id: authResult.user.uid,
+                        email: data?["email"] as? String ?? "",
+                        fname: data?["fname"] as? String ?? "",
+                        lname: data?["lname"] as? String ?? "",
+                        type: data?["type"] as? String ?? ""
+                    )
+                }
+            }
+            catch {
+                print("Error Getting User Data", error.localizedDescription)
             }
         }
-        
-        return result
+        catch {
+            print("Error Signing In", error.localizedDescription)
+        }
+        return user
     }
     
     func signOut(){

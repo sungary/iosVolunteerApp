@@ -38,7 +38,15 @@ struct LoginView: View {
 
                     
                     Button(action: {
-                        firestoreManager.signIn(email: email, password: password)
+                        //var user = User(id: "", email: "", fname: "", lname: "", type: "")
+                        
+                        Task {
+                            let user = await firestoreManager.signIn(email: email, password: password)
+                            if(user.email != "") {
+                                print(user.email)
+                            }
+                        }
+                        
                     }) {
                         Text("Sign In")
                     }
