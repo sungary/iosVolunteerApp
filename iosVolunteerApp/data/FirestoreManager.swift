@@ -36,25 +36,47 @@ class FirestoreManager: ObservableObject {
     @MainActor
     func createNewUser(email: String, password: String, fname: String, lname: String, type: String) async -> String {
         var result = ""
-        do {
-            let authResult = try await Auth.auth().createUser(withEmail: email, password: password)
-            let user = authResult.user
-            result = "success"
+        
+        // check if user has inputed requried fields
+        if(email != "" && password != "" && fname != "" && lname != "" && type != ""){
+            do {
+                let authResult = try await Auth.auth().createUser(withEmail: email, password: password)
+                let tempUser = authResult.user
+                
+                if(tempUser.uid != ""){
+                    let user = User(id: tempUser.uid, email: tempUser.email ?? "", fname: fname, lname: lname, type: type)
+                    Task {
+                        createNewUserInfo(user: user)
+                    }
+                    result = "success"
+                } else {
+                    result = "error"
+                }
+            }
+            catch {
+                //print("error with creating user")
+                result = "error"
+            }
+        } else {
+            return "error"
         }
-        catch {
-            //print("error with creating user")
-            result = "error"
-        }
-//        Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
-//            if(error != nil){
-//                //print(error?.localizedDescription ?? "")
-//                result = error?.localizedDescription ?? ""
-//            } else {
-//                print("success")
-//                result = "success"
-//            }
-//        }
+        
+        
         return result
+    }
+    
+    func createNewUserInfo(user: User) {
+        let db = Firestore.firestore()
+        let docRef = db.collection("users").document(user.id)
+        docRef.setData(["email": user.email, "fname": user.fname, "lname": user.lname, "type": user.type]) { error in
+            if(error != nil){
+                //print("error")
+            } else {
+                //print("success")
+            }
+        }
+        
+
     }
     
     func signIn(email: String, password: String) -> String {

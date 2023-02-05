@@ -46,13 +46,13 @@ struct SignUpView: View {
                 .cornerRadius(25)
             
             HStack(alignment: .center, spacing: nil){
-                TextField(text: $fname, prompt: Text("First Name")) {
+                TextField(text: $fname) {
                     Text("First Name")
                 }
                     .padding()
                     .background(Color(red: 220/256, green: 220/256, blue: 220/256))
                     .cornerRadius(25)
-                TextField(text: $lname, prompt: Text("Last Name")) {
+                TextField(text: $lname) {
                     Text("Last Name")
                 }
                     .padding()
@@ -113,8 +113,9 @@ struct SignUpView: View {
         case .error:
             return Alert(
                 title: Text("Error"),
+                message: Text("Please check all fields and try again"),
                 dismissButton: Alert.Button.default(
-                    Text("Close"),
+                    Text("OK"),
                     action: {
                         showAlert = false
                     })
