@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A43225C2298F1404002345C0 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A43225C1298F1404002345C0 /* LoginView.swift */; };
+		A43225C4298F272A002345C0 /* userModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A43225C3298F272A002345C0 /* userModel.swift */; };
+		A43225C6298F2914002345C0 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A43225C5298F2914002345C0 /* SignUpView.swift */; };
 		A4379BFE297F6CFF00D6D8FE /* SideBarNavigationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4379BFC297F6CFF00D6D8FE /* SideBarNavigationManager.swift */; };
 		A4379BFF297F6CFF00D6D8FE /* SideBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4379BFD297F6CFF00D6D8FE /* SideBar.swift */; };
 		A4379C07297F6FF400D6D8FE /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4379C06297F6FF400D6D8FE /* HomeView.swift */; };
@@ -25,6 +28,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A43225C1298F1404002345C0 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		A43225C3298F272A002345C0 /* userModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = userModel.swift; sourceTree = "<group>"; };
+		A43225C5298F2914002345C0 /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 		A4379BFC297F6CFF00D6D8FE /* SideBarNavigationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideBarNavigationManager.swift; sourceTree = "<group>"; };
 		A4379BFD297F6CFF00D6D8FE /* SideBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideBar.swift; sourceTree = "<group>"; };
 		A4379C06297F6FF400D6D8FE /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
@@ -58,6 +64,7 @@
 			isa = PBXGroup;
 			children = (
 				A4ED83D8297F86ED00C4B860 /* listingsModel.swift */,
+				A43225C3298F272A002345C0 /* userModel.swift */,
 			);
 			path = models;
 			sourceTree = "<group>";
@@ -85,6 +92,8 @@
 			children = (
 				A4379C06297F6FF400D6D8FE /* HomeView.swift */,
 				A47828EC2985F3ED0086F9F0 /* ViewListingView.swift */,
+				A43225C1298F1404002345C0 /* LoginView.swift */,
+				A43225C5298F2914002345C0 /* SignUpView.swift */,
 			);
 			path = screens;
 			sourceTree = "<group>";
@@ -218,7 +227,10 @@
 			files = (
 				A47828ED2985F3ED0086F9F0 /* ViewListingView.swift in Sources */,
 				A4ED83D9297F86ED00C4B860 /* listingsModel.swift in Sources */,
+				A43225C4298F272A002345C0 /* userModel.swift in Sources */,
 				A4ED83DC297F8AD400C4B860 /* FirestoreManager.swift in Sources */,
+				A43225C2298F1404002345C0 /* LoginView.swift in Sources */,
+				A43225C6298F2914002345C0 /* SignUpView.swift in Sources */,
 				A4D32EF42973A1F600EF829A /* ContentView.swift in Sources */,
 				A4D32EF22973A1F600EF829A /* iosVolunteerApp.swift in Sources */,
 				A4379C07297F6FF400D6D8FE /* HomeView.swift in Sources */,

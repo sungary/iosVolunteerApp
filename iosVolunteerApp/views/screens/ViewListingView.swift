@@ -14,6 +14,8 @@ struct ViewListingView: View {
     var body: some View {
         VStack(){
             Text(listing.name)
+                .padding()
+            Text(listing.lDescription)
         }
     }
 }

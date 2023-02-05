@@ -13,37 +13,38 @@ struct ContentView: View {
     @State private var isSideBarOpen = false
     @ObservedObject var navigationManager: SideBarNavigationManager =  SideBarNavigationManager()
     
+    @State var isLoggedIn: Bool = false
+    
     var body: some View {
         
         ZStack {
-            NavigationView {
-                VStack {
-                    switch navigationManager.viewType{
-                    case .home:
-                        HomeView()
-                    case .myTemp:
-                        Text("test 1")
-                    case .settings:
-                        Text("test")
-                    }
-                }
-                .navigationBarItems(
-                    trailing:
-                        Button {
-                            isSideBarOpen.toggle()
-                        } label: {
-                            Label("Toggle SideBar", systemImage: "line.3.horizontal")
+            if(!isLoggedIn){
+                LoginView()
+            } else {
+                NavigationView {
+                    VStack {
+                        switch navigationManager.viewType{
+                        case .home:
+                            HomeView()
+                        case .myTemp:
+                            Text("test 1")
+                        case .settings:
+                            Text("test")
                         }
-                )
+                    }
+                    .navigationBarItems(
+                        trailing:
+                            Button {
+                                isSideBarOpen.toggle()
+                            } label: {
+                                Label("Toggle SideBar", systemImage: "line.3.horizontal")
+                            }
+                    )
+                }
+                SideBar(isSideBarVisible: self.$isSideBarOpen, navigationManager: self.navigationManager)
             }
-//            .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .local)
-//                .onEnded({ value in
-//                    if(value.translation.width > 0){
-//                        isSideBarOpen.toggle()
-//                    }
-//                }))
-            SideBar(isSideBarVisible: self.$isSideBarOpen, navigationManager: self.navigationManager)
         }
+            
     }
 }
 
