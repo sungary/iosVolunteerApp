@@ -13,12 +13,12 @@ struct ContentView: View {
     @State private var isSideBarOpen = false
     @ObservedObject var navigationManager: SideBarNavigationManager =  SideBarNavigationManager()
     
-    @State var isLoggedIn: Bool = false
+    @State var isSignedIn = false
     
     var body: some View {
         
         ZStack {
-            if(!isLoggedIn){
+            if(!isSignedIn){
                 LoginView()
             } else {
                 NavigationView {

@@ -44,7 +44,7 @@ class FirestoreManager: ObservableObject {
                 let tempUser = authResult.user
                 
                 if(tempUser.uid != ""){
-                    let user = User(id: tempUser.uid, email: tempUser.email ?? "", fname: fname, lname: lname, type: type)
+                    let user = User(id: tempUser.uid, email: tempUser.email ?? "", fname: fname, lname: lname, type: type, isSignedIn: false)
                     Task {
                         createNewUserInfo(user: user)
                     }
@@ -81,7 +81,7 @@ class FirestoreManager: ObservableObject {
     @MainActor
     func signIn(email: String, password: String) async -> User {
         
-        var user = User(id: "", email: "", fname: "", lname: "", type: "")
+        var user = User(id: "", email: "", fname: "", lname: "", type: "", isSignedIn: false)
         
         do {
             let authResult = try await Auth.auth().signIn(withEmail: email, password: password)
@@ -95,7 +95,8 @@ class FirestoreManager: ObservableObject {
                         email: data?["email"] as? String ?? "",
                         fname: data?["fname"] as? String ?? "",
                         lname: data?["lname"] as? String ?? "",
-                        type: data?["type"] as? String ?? ""
+                        type: data?["type"] as? String ?? "",
+                        isSignedIn: true
                     )
                 }
             }
