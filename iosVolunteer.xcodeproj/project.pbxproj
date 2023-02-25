@@ -27,6 +27,7 @@
 		A4ED83D7297F7D8D00C4B860 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = A4ED83D6297F7D8D00C4B860 /* FirebaseStorage */; };
 		A4ED83D9297F86ED00C4B860 /* listingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4ED83D8297F86ED00C4B860 /* listingsModel.swift */; };
 		A4ED83DC297F8AD400C4B860 /* FirestoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4ED83DB297F8AD300C4B860 /* FirestoreManager.swift */; };
+		A4F69F4B29AAADC000BDBA82 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = A4F69F4A29AAADBF00BDBA82 /* README.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,6 +48,7 @@
 		A4ED83CD297F7C0C00C4B860 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		A4ED83D8297F86ED00C4B860 /* listingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = listingsModel.swift; sourceTree = "<group>"; };
 		A4ED83DB297F8AD300C4B860 /* FirestoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreManager.swift; sourceTree = "<group>"; };
+		A4F69F4A29AAADBF00BDBA82 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -123,6 +125,7 @@
 		A4D32EF02973A1F600EF829A /* iosVolunteerApp */ = {
 			isa = PBXGroup;
 			children = (
+				A4F69F4A29AAADBF00BDBA82 /* README.md */,
 				A4ED83DA297F8A7400C4B860 /* data */,
 				A4ED83CD297F7C0C00C4B860 /* GoogleService-Info.plist */,
 				A42437AE297F6B0C00D121D0 /* views */,
@@ -220,6 +223,7 @@
 			files = (
 				A4D32EF92973A1FD00EF829A /* Preview Assets.xcassets in Resources */,
 				A4D32EF62973A1FD00EF829A /* Assets.xcassets in Resources */,
+				A4F69F4B29AAADC000BDBA82 /* README.md in Resources */,
 				A4ED83CE297F7C0C00C4B860 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
