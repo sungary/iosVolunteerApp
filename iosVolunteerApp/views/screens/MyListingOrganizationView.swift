@@ -1,16 +1,17 @@
 import SwiftUI
 
-struct HomeView: View {
+struct MyListingOrganizationView: View {
     @EnvironmentObject var firestoreManager: FirestoreManager
-    
+
     var body: some View {
         ZStack {
             NavigationView {
                 VStack {
-                    List(firestoreManager.allListings) { listing in
+                    List(firestoreManager.myListings) { listing in
                         NavigationLink(destination: ViewListingView(listing: listing)) {
                             HStack {
                                 Button {
+                                    
                                 } label: {
                                     Label("Favorite", systemImage: "star")
                                         .labelStyle(.iconOnly)
@@ -34,7 +35,7 @@ struct HomeView: View {
                     }
 
                 }
-                .navigationBarTitle("Home", displayMode: .large)
+                .navigationBarTitle("My Listings O", displayMode: .large)
                 
             }
             .buttonStyle(.bordered)
@@ -44,10 +45,9 @@ struct HomeView: View {
         
     }
 }
-
-struct HomeView_Previews: PreviewProvider {
+struct MyListingOrganizationView_Previews: PreviewProvider {
     static var previews: some View {
-        HomeView()
+        MyListingOrganizationView()
             .environmentObject(FirestoreManager())
     }
 }

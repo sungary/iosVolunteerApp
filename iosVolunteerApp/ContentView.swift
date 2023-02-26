@@ -3,7 +3,7 @@ import SwiftUI
 struct ContentView: View {
     @EnvironmentObject var firestoreManager: FirestoreManager
     
-    @State private var isSideBarOpen = false
+    @State private var isSideBarVisible = false
     @ObservedObject var navigationManager: SideBarNavigationManager =  SideBarNavigationManager()
     
     @State private var user: User = User(id: "", email: "", fname: "", lname: "", type: "", isSignedIn: false)
@@ -20,23 +20,33 @@ struct ContentView: View {
                         switch navigationManager.viewType{
                         case .home:
                             HomeView()
-                        case .myTemp:
-                            Text("test 1")
+                        case .myListing:
+                            switch user.type {
+                            case "V":
+                                MyListingVolunteerView()
+                            case "O":
+                                MyListingOrganizationView()
+                            default:
+                                ErrorView()
+                            }
+                            
                         case .settings:
                             Text("test")
+                        case .signOut:
+                            SignOutView(user: $user, isSideBarVisible: self.$isSideBarVisible, navigationManager: self.navigationManager)
                         }
                     }
                     .navigationBarItems(
                         trailing:
                             Button {
-                                isSideBarOpen.toggle()
+                                isSideBarVisible.toggle()
                             } label: {
                                 Label("Toggle SideBar", systemImage: "line.3.horizontal")
                             }
                     )
                 }
             }
-            SideBar(isSideBarVisible: self.$isSideBarOpen, navigationManager: self.navigationManager)
+            SideBar(isSideBarVisible: self.$isSideBarVisible, navigationManager: self.navigationManager)
         }
     }
 }

@@ -55,13 +55,11 @@ struct LoginView: View {
                             buttonDisabled = true
                             
                             Task {
-                                
                                 user = await firestoreManager.signIn(email: email, password: password)
-                                if(user.type != "") {
-                                    print(user.type)
-                                    print(user.isSignedIn)
-                                }
-                                print(user.isSignedIn)
+//                                if(user.type != "") {
+//                                    print(user.type)
+//                                    print(user.isSignedIn)
+//                                }
                                 buttonDisabled = false
                             }
                             

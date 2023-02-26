@@ -4,9 +4,10 @@ import FirebaseAuth
 
 class FirestoreManager: ObservableObject {
     
-    @Published var listings = [Listing]()
+    @Published var allListings = [Listing]()
+    @Published var myListings = [Listing]()
     
-    func fetchListings() {
+    func fetchListingsAll() {
         let db = Firestore.firestore()
         
         db.collection("listings").addSnapshotListener { querySnapshot, error in
@@ -15,7 +16,27 @@ class FirestoreManager: ObservableObject {
                 return
             }
             
-            self.listings = documents.map{ (queryDocumentSnapshot) -> Listing in
+            self.allListings = documents.map{ (queryDocumentSnapshot) -> Listing in
+                let data = queryDocumentSnapshot.data()
+                let name = data["name"] as? String ?? ""
+                let sDescription = data["sDescription"] as? String ?? ""
+                let lDescription = data["lDescription"] as? String ?? ""
+                
+                return Listing(name: name, sDescription: sDescription, lDescription: lDescription)
+            }
+        }
+    }
+    
+    func fetchListingsUser() {
+        let db = Firestore.firestore()
+        
+        db.collection("listings").addSnapshotListener { querySnapshot, error in
+            guard let documents = querySnapshot?.documents else {
+                print("No Documents")
+                return
+            }
+            
+            self.myListings = documents.map{ (queryDocumentSnapshot) -> Listing in
                 let data = queryDocumentSnapshot.data()
                 let name = data["name"] as? String ?? ""
                 let sDescription = data["sDescription"] as? String ?? ""
@@ -103,12 +124,16 @@ class FirestoreManager: ObservableObject {
         return user
     }
     
-    func signOut(){
+    func signOut() async -> User{
         let firebaseAuth = Auth.auth()
         do {
             try firebaseAuth.signOut()
+            
         } catch let signOutError as NSError {
             print("Error signing out: %@", signOutError)
         }
+        
+        return User()
+        
     }
 }

@@ -2,8 +2,9 @@ import SwiftUI
 
 enum ViewTypes {
     case home
-    case myTemp
+    case myListing
     case settings
+    case signOut
 }
 
 class SideBarNavigationManager : ObservableObject {
