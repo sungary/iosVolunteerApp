@@ -1,10 +1,3 @@
-//
-//  FirestoreManager.swift
-//  iosVolunteer
-//
-//  Created by Gary Sun on 1/23/23.
-//
-
 import SwiftUI
 import Firebase
 import FirebaseAuth

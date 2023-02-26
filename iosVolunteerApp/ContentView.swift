@@ -1,10 +1,3 @@
-//
-//  ContentView.swift
-//  iosVolunteerApp
-//
-//  Created by Gary Sun on 1/14/23.
-//
-
 import SwiftUI
 
 struct ContentView: View {
@@ -13,15 +6,16 @@ struct ContentView: View {
     @State private var isSideBarOpen = false
     @ObservedObject var navigationManager: SideBarNavigationManager =  SideBarNavigationManager()
     
-    @State var isSignedIn = false
+    @State private var user: User = User(id: "", email: "", fname: "", lname: "", type: "", isSignedIn: false)
     
     var body: some View {
         
         ZStack {
-            if(!isSignedIn){
-                LoginView()
-            } else {
-                NavigationView {
+            NavigationView{
+                switch user.isSignedIn {
+                case false:
+                    LoginView(user: $user)
+                case true:
                     VStack {
                         switch navigationManager.viewType{
                         case .home:
@@ -41,10 +35,9 @@ struct ContentView: View {
                             }
                     )
                 }
-                SideBar(isSideBarVisible: self.$isSideBarOpen, navigationManager: self.navigationManager)
             }
+            SideBar(isSideBarVisible: self.$isSideBarOpen, navigationManager: self.navigationManager)
         }
-            
     }
 }
 

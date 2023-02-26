@@ -7,6 +7,8 @@ struct LoginView: View {
     @State private var password: String = ""
     @State var buttonDisabled = false
     
+    @Binding var user: User
+    
     var body: some View {
         NavigationView() {
             ZStack {
@@ -54,11 +56,12 @@ struct LoginView: View {
                             
                             Task {
                                 
-                                let user = await firestoreManager.signIn(email: email, password: password)
+                                user = await firestoreManager.signIn(email: email, password: password)
                                 if(user.type != "") {
                                     print(user.type)
-                                    
+                                    print(user.isSignedIn)
                                 }
+                                print(user.isSignedIn)
                                 buttonDisabled = false
                             }
                             
@@ -84,8 +87,9 @@ struct LoginView: View {
 }
 
 struct LoginView_Previews: PreviewProvider {
+    @State static var testUser: User = User()
     static var previews: some View {
-        LoginView()
+        LoginView(user: $testUser)
             .environmentObject(FirestoreManager())
     }
 }
