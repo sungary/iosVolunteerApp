@@ -8,9 +8,10 @@
 import Foundation
 
 struct Listing: Identifiable {
-    var id: String = UUID().uuidString
-    var name: String
-    var sDescription: String
-    var lDescription: String
-    
+    var id: String = ""
+    var name: String = ""
+    var description: String = ""
+    var createdBy: String = ""
+    var createdOn: String = ""
+    var location: String = ""
 }

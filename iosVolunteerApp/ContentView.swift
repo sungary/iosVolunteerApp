@@ -9,7 +9,6 @@ struct ContentView: View {
     @State private var user: User = User(id: "", email: "", fname: "", lname: "", type: "", isSignedIn: false)
     
     var body: some View {
-        
         ZStack {
             NavigationView{
                 switch user.isSignedIn {
@@ -19,13 +18,13 @@ struct ContentView: View {
                     VStack {
                         switch navigationManager.viewType{
                         case .home:
-                            HomeView()
+                            HomeView(user: user)
                         case .myListing:
                             switch user.type {
                             case "V":
                                 MyListingVolunteerView()
                             case "O":
-                                MyListingOrganizationView()
+                                MyListingOrganizationView(user: $user)
                             default:
                                 ErrorView()
                             }

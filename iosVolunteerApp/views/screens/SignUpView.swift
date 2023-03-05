@@ -63,7 +63,7 @@ struct SignUpView: View {
             
             Picker("Type", selection: $type){
                 Text("Volunteer").tag("V")
-                Text("Organization").tag("N")
+                Text("Organization").tag("O")
             }
             .padding()
             .pickerStyle(.segmented)

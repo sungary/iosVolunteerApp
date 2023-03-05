@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A4264A0C29B4039D004829BA /* AddListingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4264A0B29B4039D004829BA /* AddListingView.swift */; };
 		A43225C2298F1404002345C0 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A43225C1298F1404002345C0 /* LoginView.swift */; };
 		A43225C4298F272A002345C0 /* userModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A43225C3298F272A002345C0 /* userModel.swift */; };
 		A43225C6298F2914002345C0 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A43225C5298F2914002345C0 /* SignUpView.swift */; };
@@ -34,6 +35,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A4264A0B29B4039D004829BA /* AddListingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddListingView.swift; sourceTree = "<group>"; };
 		A43225C1298F1404002345C0 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		A43225C3298F272A002345C0 /* userModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = userModel.swift; sourceTree = "<group>"; };
 		A43225C5298F2914002345C0 /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
@@ -111,6 +113,7 @@
 				A456FF8029AC072B00581E28 /* MyListingVolunteerView.swift */,
 				A456FF8229AC07B200581E28 /* MyListingOrganizationView.swift */,
 				A456FF8429AC0D0100581E28 /* SignOutView.swift */,
+				A4264A0B29B4039D004829BA /* AddListingView.swift */,
 			);
 			path = screens;
 			sourceTree = "<group>";
@@ -247,6 +250,7 @@
 				A456FF8529AC0D0100581E28 /* SignOutView.swift in Sources */,
 				A47828ED2985F3ED0086F9F0 /* ViewListingView.swift in Sources */,
 				A4ED83D9297F86ED00C4B860 /* listingsModel.swift in Sources */,
+				A4264A0C29B4039D004829BA /* AddListingView.swift in Sources */,
 				A43225C4298F272A002345C0 /* userModel.swift in Sources */,
 				A491A462299065320069008D /* LoginLoadingView.swift in Sources */,
 				A456FF8129AC072B00581E28 /* MyListingVolunteerView.swift in Sources */,

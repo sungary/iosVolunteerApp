@@ -15,13 +15,13 @@ struct ViewListingView: View {
         VStack(){
             Text(listing.name)
                 .padding()
-            Text(listing.lDescription)
+            Text(listing.description)
         }
     }
 }
 
 struct ViewListingView_Previews: PreviewProvider {
     static var previews: some View {
-        ViewListingView(listing: Listing(name: "Test Name", sDescription: "Test S Description", lDescription: "Test L Description"))
+        ViewListingView(listing: Listing(name: "Test Name", description: "Test L Description"))
     }
 }

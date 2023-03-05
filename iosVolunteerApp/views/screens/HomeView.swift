@@ -2,7 +2,7 @@ import SwiftUI
 
 struct HomeView: View {
     @EnvironmentObject var firestoreManager: FirestoreManager
-    
+    @State var user: User
     var body: some View {
         ZStack {
             NavigationView {
@@ -19,24 +19,24 @@ struct HomeView: View {
 
                                 VStack(alignment: .leading) {
                                     Text(listing.name)
-                                    Text(listing.sDescription)
+                                    Text(listing.description)
                                 }
                                 .padding()
                             }
                         }
                         
                     }
-                    .onAppear(){
-                        self.firestoreManager.fetchListingsAll()
-                    }
+//                    .onAppear(){
+//                        self.firestoreManager.fetchListingsAll()
+//                        //self.firestoreManager.fetchListingsUser(currentUserID: user.id)
+//                    }
                     .refreshable {
                         self.firestoreManager.fetchListingsAll()
                     }
-
                 }
-                .navigationBarTitle("Home", displayMode: .large)
                 
             }
+            .navigationBarTitle("Home", displayMode: .automatic)
             .buttonStyle(.bordered)
             .font(.headline.bold())
             
@@ -46,8 +46,9 @@ struct HomeView: View {
 }
 
 struct HomeView_Previews: PreviewProvider {
+    @State static var testUser: User = User()
     static var previews: some View {
-        HomeView()
+        HomeView(user: testUser)
             .environmentObject(FirestoreManager())
     }
 }
