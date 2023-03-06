@@ -45,9 +45,9 @@ struct MyListingOrganizationView: View {
                         NavigationLink(destination: AddListingView()){
                             Text("Add Listing")
                         }
-//                        .buttonStyle(.bordered)
-//                        .cornerRadius(25)
-//                        .tint(.blue)
+                        .buttonStyle(.bordered)
+                        .cornerRadius(25)
+                        .tint(.blue)
                     }
                     ToolbarItem(placement: .navigationBarTrailing){
                         Button {
@@ -55,14 +55,12 @@ struct MyListingOrganizationView: View {
                         } label: {
                             Label("Toggle SideBar", systemImage: "line.3.horizontal")
                         }
-//                        .buttonStyle(.bordered)
-//                        .cornerRadius(25)
-//                        .tint(.blue)
+                        .buttonStyle(.bordered)
+                        .cornerRadius(25)
+                        .tint(.blue)
                     }
                 }
-                .buttonStyle(.bordered)
-                .cornerRadius(25)
-                .tint(.blue)
+                
             }
             
         }

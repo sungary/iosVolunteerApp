@@ -25,9 +25,7 @@ struct HomeView: View {
                                 }
                                 .padding()
                             }
-                            
                         }
-                        
                     }
                     .onAppear() {
                         firestoreManager.fetchListingsAll()
@@ -44,15 +42,11 @@ struct HomeView: View {
                         } label: {
                             Label("Toggle SideBar", systemImage: "line.3.horizontal")
                         }
-//                        .buttonStyle(.bordered)
-//                        .cornerRadius(25)
-//                        .tint(.blue)
+                        .buttonStyle(.bordered)
+                        .cornerRadius(25)
+                        .tint(.blue)
                     }
                 }
-                .buttonStyle(.bordered)
-                .cornerRadius(25)
-                .tint(.blue)
-                
             }
         }
     }

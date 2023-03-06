@@ -35,18 +35,6 @@ struct ContentView: View {
                             ErrorView()
                         }
                     }
-//                    .toolbar {
-//                        ToolbarItem(placement: .navigationBarTrailing){
-//                            Button {
-//                                isSideBarVisible.toggle()
-//                            } label: {
-//                                Label("Toggle SideBar", systemImage: "line.3.horizontal")
-//                            }
-//                            .buttonStyle(.bordered)
-//                            .cornerRadius(25)
-//                            .tint(.blue)
-//                        }
-//                    }
                 }
             }
             SideBar(navigationManager: self.$navigationManager)

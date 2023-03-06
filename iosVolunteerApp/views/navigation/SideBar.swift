@@ -20,7 +20,6 @@ struct SideBar: View {
     var backgroundColor: Color = Color.blue
     
     var body: some View {
-        let _ = print(navigationManager.isSideBarVisable)
         ZStack {
             GeometryReader { _ in
                 EmptyView()
