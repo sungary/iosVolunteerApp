@@ -15,22 +15,21 @@ var menuData: [MenuItem] = [
 ]
 
 struct SideBar: View {
-    @Binding var isSideBarVisible: Bool
-    var navigationManager: SideBarNavigationManager
+    @Binding var navigationManager: SideBarNavigationManager
     var sideBarWidth = UIScreen.main.bounds.size.width * 0.55
     var backgroundColor: Color = Color.blue
     
     var body: some View {
-        
+        let _ = print(navigationManager.isSideBarVisable)
         ZStack {
             GeometryReader { _ in
                 EmptyView()
             }
             .background(.black.opacity(0.75))
-            .opacity(isSideBarVisible ? 1 : 0)
-            .animation(.easeInOut.delay(0.2), value: isSideBarVisible)
+            .opacity(navigationManager.isSideBarVisable ? 1 : 0)
+            .animation(.easeInOut.delay(0.2), value: navigationManager.isSideBarVisable)
             .onTapGesture {
-                isSideBarVisible.toggle()
+                navigationManager.isSideBarVisable.toggle()
             }
             displaySideBar
         }
@@ -46,8 +45,8 @@ struct SideBar: View {
                 }
             }
             .frame(width: sideBarWidth)
-            .offset(x: isSideBarVisible ? 0 : -sideBarWidth)
-            .animation(.default, value: isSideBarVisible)
+            .offset(x: navigationManager.isSideBarVisable ? 0 : -sideBarWidth)
+            .animation(.default, value: navigationManager.isSideBarVisable)
             Spacer()
         }
     }
@@ -56,7 +55,7 @@ struct SideBar: View {
         
         VStack(alignment: .leading, spacing: 25) {
             ForEach(menuData) { item in
-                menuLink(icon: item.icon, text: item.text, view: item.view, navigationManager: navigationManager, isSideBarVisible: self.$isSideBarVisible)
+                menuLink(icon: item.icon, text: item.text, view: item.view, navigationManager: $navigationManager)
             }
         }
         .padding(.top, 100)
@@ -69,8 +68,7 @@ struct menuLink: View {
     var icon: String
     var text: String
     var view: ViewTypes
-    var navigationManager: SideBarNavigationManager
-    @Binding var isSideBarVisible: Bool
+    @Binding var navigationManager: SideBarNavigationManager
     
     var body: some View {
         HStack {
@@ -85,14 +83,15 @@ struct menuLink: View {
         }
         .onTapGesture {
             navigationManager.viewType = view
-            isSideBarVisible.toggle()
+            navigationManager.isSideBarVisable.toggle()
         }
     }
 }
 
 
 struct SideBar_Previews: PreviewProvider {
+    @State static var navigationManager: SideBarNavigationManager = SideBarNavigationManager()
     static var previews: some View {
-        SideBar(isSideBarVisible: .constant(true), navigationManager: SideBarNavigationManager())
+        SideBar(navigationManager: $navigationManager)
     }
 }

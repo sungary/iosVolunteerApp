@@ -5,9 +5,11 @@ enum ViewTypes {
     case myListing
     case settings
     case signOut
+    case error
 }
 
-class SideBarNavigationManager : ObservableObject {
-    @Published var viewType: ViewTypes = .home
+struct SideBarNavigationManager {
+    var viewType: ViewTypes = .home
+    var isSideBarVisable: Bool = false
 }
 

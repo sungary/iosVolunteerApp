@@ -10,8 +10,7 @@ import SwiftUI
 struct SignOutView: View {
     @EnvironmentObject var firestoreManager: FirestoreManager
     @Binding var user: User
-    @Binding var isSideBarVisible: Bool
-    var navigationManager: SideBarNavigationManager
+    @Binding var navigationManager: SideBarNavigationManager
     
     var body: some View {
         VStack() {
@@ -34,8 +33,9 @@ struct SignOutView: View {
 
 struct SignOutView_Previews: PreviewProvider {
     @State static var testUser: User = User()
+    @State static var navigationManager: SideBarNavigationManager = SideBarNavigationManager()
     static var previews: some View {
-        SignOutView(user: $testUser, isSideBarVisible: .constant(true), navigationManager: SideBarNavigationManager())
+        SignOutView(user: $testUser, navigationManager: $navigationManager)
             .environmentObject(FirestoreManager())
     }
 }

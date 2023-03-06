@@ -2,7 +2,9 @@ import SwiftUI
 
 struct HomeView: View {
     @EnvironmentObject var firestoreManager: FirestoreManager
-    @State var user: User
+    @Binding var user: User
+    @Binding var navigationManager: SideBarNavigationManager
+    
     var body: some View {
         ZStack {
             NavigationView {
@@ -23,32 +25,44 @@ struct HomeView: View {
                                 }
                                 .padding()
                             }
+                            
                         }
                         
                     }
-//                    .onAppear(){
-//                        self.firestoreManager.fetchListingsAll()
-//                        //self.firestoreManager.fetchListingsUser(currentUserID: user.id)
-//                    }
+                    .onAppear() {
+                        firestoreManager.fetchListingsAll()
+                    }
                     .refreshable {
-                        self.firestoreManager.fetchListingsAll()
+                        firestoreManager.fetchListingsAll()
                     }
                 }
+                .navigationBarTitle("Home", displayMode: .automatic)
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing){
+                        Button {
+                            navigationManager.isSideBarVisable.toggle()
+                        } label: {
+                            Label("Toggle SideBar", systemImage: "line.3.horizontal")
+                        }
+//                        .buttonStyle(.bordered)
+//                        .cornerRadius(25)
+//                        .tint(.blue)
+                    }
+                }
+                .buttonStyle(.bordered)
+                .cornerRadius(25)
+                .tint(.blue)
                 
             }
-            .navigationBarTitle("Home", displayMode: .automatic)
-            .buttonStyle(.bordered)
-            .font(.headline.bold())
-            
         }
-        
     }
 }
 
 struct HomeView_Previews: PreviewProvider {
     @State static var testUser: User = User()
+    @State static var navigationManager: SideBarNavigationManager = SideBarNavigationManager()
     static var previews: some View {
-        HomeView(user: testUser)
+        HomeView(user: $testUser, navigationManager: $navigationManager)
             .environmentObject(FirestoreManager())
     }
 }

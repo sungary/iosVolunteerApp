@@ -3,8 +3,7 @@ import SwiftUI
 struct ContentView: View {
     @EnvironmentObject var firestoreManager: FirestoreManager
     
-    @State private var isSideBarVisible = false
-    @ObservedObject var navigationManager: SideBarNavigationManager =  SideBarNavigationManager()
+    @State var navigationManager: SideBarNavigationManager = SideBarNavigationManager()
     
     @State private var user: User = User(id: "", email: "", fname: "", lname: "", type: "", isSignedIn: false)
     
@@ -18,34 +17,39 @@ struct ContentView: View {
                     VStack {
                         switch navigationManager.viewType{
                         case .home:
-                            HomeView(user: user)
+                            HomeView(user: $user, navigationManager: $navigationManager)
                         case .myListing:
                             switch user.type {
                             case "V":
                                 MyListingVolunteerView()
                             case "O":
-                                MyListingOrganizationView(user: $user)
+                                MyListingOrganizationView(user: $user, navigationManager: $navigationManager)
                             default:
                                 ErrorView()
                             }
-                            
                         case .settings:
                             Text("test")
                         case .signOut:
-                            SignOutView(user: $user, isSideBarVisible: self.$isSideBarVisible, navigationManager: self.navigationManager)
+                            SignOutView(user: $user, navigationManager: self.$navigationManager)
+                        case .error:
+                            ErrorView()
                         }
                     }
-                    .navigationBarItems(
-                        trailing:
-                            Button {
-                                isSideBarVisible.toggle()
-                            } label: {
-                                Label("Toggle SideBar", systemImage: "line.3.horizontal")
-                            }
-                    )
+//                    .toolbar {
+//                        ToolbarItem(placement: .navigationBarTrailing){
+//                            Button {
+//                                isSideBarVisible.toggle()
+//                            } label: {
+//                                Label("Toggle SideBar", systemImage: "line.3.horizontal")
+//                            }
+//                            .buttonStyle(.bordered)
+//                            .cornerRadius(25)
+//                            .tint(.blue)
+//                        }
+//                    }
                 }
             }
-            SideBar(isSideBarVisible: self.$isSideBarVisible, navigationManager: self.navigationManager)
+            SideBar(navigationManager: self.$navigationManager)
         }
     }
 }

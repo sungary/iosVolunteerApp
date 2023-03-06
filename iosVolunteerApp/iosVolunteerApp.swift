@@ -14,6 +14,7 @@ import FirebaseAuth
 @main
 struct iosVolunteerAppApp: App {
     @StateObject var firestoreManager = FirestoreManager()
+    //@ObservedObject var navigationManager: SideBarNavigationManager =  SideBarNavigationManager()
     
     init() {
         FirebaseApp.configure()

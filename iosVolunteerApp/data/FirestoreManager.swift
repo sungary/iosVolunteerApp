@@ -41,19 +41,17 @@ class FirestoreManager: ObservableObject {
     }
     
     func fetchListingsUser(currentUserID: String) {
+        
         let db = Firestore.firestore()
-        
-        
-        
         db.collection("listings").addSnapshotListener { querySnapshot, error in
             guard let documents = querySnapshot?.documents else {
                 print("No Documents")
                 return
             }
-            
+
             self.myListings = documents.map{ (queryDocumentSnapshot) -> Listing in
                 let data = queryDocumentSnapshot.data()
-                
+
                 if(data["createdBy"] as? String ?? "" == currentUserID){
                     let id = queryDocumentSnapshot.documentID
                     let name = data["name"] as? String ?? ""
@@ -61,10 +59,10 @@ class FirestoreManager: ObservableObject {
                     let createdBy = data["createdBy"] as? String ?? ""
                     let createdOn = data["createdOn"] as? String ?? ""
                     let location = data["location"] as? String ?? ""
-                    
+
                     return Listing(id: id, name: name, description: description, createdBy: createdBy, createdOn: createdOn, location: location)
                 }
-                
+
                 return Listing()
             }
         }
@@ -161,9 +159,12 @@ class FirestoreManager: ObservableObject {
         catch {
             print("Error Signing In", error.localizedDescription)
         }
+//        if(user.id != ""){
+//            fetchListingsAll()
+//            fetchListingsUser(currentUserID: user.id)
+//        }
         if(user.id != ""){
-            fetchListingsAll()
-            fetchListingsUser(currentUserID: user.id)
+            
         }
         return user
     }
