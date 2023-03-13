@@ -40,25 +40,26 @@ class FirestoreManager: ObservableObject {
         }
     }
     
-    func fetchListingsUser(currentUserID: String) {
-        
+    func fetchListingsUser() {
         let db = Firestore.firestore()
         let docRefUser = db.collection("users").document(Auth.auth().currentUser?.uid ?? "")
         docRefUser.getDocument { (document, error) in
             if let document = document, document.exists {
                 let data = document.data()
                 
+                // list of lisings that the user has
                 let arr: [String] = data?["myListings"] as! [String]
-                //print(arr)
                 
+                // using the above list, search through all listings and get the ones that below to the user
                 db.collection("listings").whereField(FieldPath.documentID(), in: arr).getDocuments() { (querySnapshot, err) in
                     if let err = err {
                         print("error getting documents for my listing: \(err)")
                     } else {
                         
-                        let documentTest = querySnapshot!.documents
+                        let documentListing = querySnapshot!.documents
                         
-                        self.myListings = documentTest.map{ (queryDocumentSnapshot) -> Listing in
+                        // stores the lisings into the myListings so that frontend can fetch it
+                        self.myListings = documentListing.map{ (queryDocumentSnapshot) -> Listing in
                             let lisingData = queryDocumentSnapshot.data()
                             
                             let id = queryDocumentSnapshot.documentID
@@ -74,30 +75,6 @@ class FirestoreManager: ObservableObject {
                 }
             }
         }
-        
-        //        db.collection("listings").addSnapshotListener { querySnapshot, error in
-        //            guard let documents = querySnapshot?.documents else {
-        //                print("No Documents")
-        //                return
-        //            }
-        //
-        //            self.myListings = documents.map{ (queryDocumentSnapshot) -> Listing in
-        //                let data = queryDocumentSnapshot.data()
-        //
-        //                if(data["createdBy"] as? String ?? "" == currentUserID){
-        //                    let id = queryDocumentSnapshot.documentID
-        //                    let name = data["name"] as? String ?? ""
-        //                    let description = data["description"] as? String ?? ""
-        //                    let createdBy = data["createdBy"] as? String ?? ""
-        //                    let createdOn = data["createdOn"] as? String ?? ""
-        //                    let location = data["location"] as? String ?? ""
-        //
-        //                    return Listing(id: id, name: name, description: description, createdBy: createdBy, createdOn: createdOn, location: location)
-        //                }
-        //
-        //                return Listing()
-        //            }
-        //        }
     }
     
     // create new user through Authentication
@@ -191,13 +168,11 @@ class FirestoreManager: ObservableObject {
         catch {
             print("Error Signing In", error.localizedDescription)
         }
-        //        if(user.id != ""){
-        //            fetchListingsAll()
-        //            fetchListingsUser(currentUserID: user.id)
-        //        }
         if(user.id != ""){
-            
+            fetchListingsAll()
+            fetchListingsUser()
         }
+        
         return user
     }
     
@@ -214,24 +189,44 @@ class FirestoreManager: ObservableObject {
         
     }
     
-    func createNewListing(createdBy: String, description: String, name: String, location: String) {
-        let db = Firestore.firestore()
+    @MainActor
+    func createNewListing(createdBy: String, name: String, location: String, description: String, completionHandler: (String) -> Void) async {
+        var result = ""
         
-        let docRef = db.collection("listings").document()
-        docRef.setData([
-            "createdBy": createdBy,
-            "createdOn": Timestamp(date: Date()),
-            "description": description,
-            "name": name,
-            "Location": location])
-        { error in
-            if(error != nil){
-                //print("error")
-            } else {
-                //print("success")
+        if(name != "" && location != "" && description != "") {
+            let db = Firestore.firestore()
+            var ref: DocumentReference? = nil
+            
+            ref = db.collection("listings").addDocument(data: [
+                "name": name,
+                "location": location,
+                "description": description,
+                "createdBy": createdBy,
+                "createdOn": Timestamp(date: Date())
+            ]) { err in
+                if let err = err {
+                    print("Error adding listing: \(err)")
+                    result = "error adding listing"
+                } else {
+                    // documented added sucessfully
+                    result = "success"
+                    print("test1: \(result)")
+                    // add document id to users listing array
+                    let docID = ref?.documentID ?? ""
+                    let tempRef = db.collection("users").document(Auth.auth().currentUser?.uid ?? "")
+                    tempRef.updateData([
+                        "myListings": FieldValue.arrayUnion([docID])
+                    ])
+                }
             }
+        } else {
+            result = "Error: missing fields"
         }
         
-        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1){
+            print("test2: \(result)")
+            
+        }
     }
+    
 }

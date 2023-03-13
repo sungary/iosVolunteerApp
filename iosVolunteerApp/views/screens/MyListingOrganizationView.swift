@@ -29,11 +29,11 @@ struct MyListingOrganizationView: View {
                         }
                         
                     }
-                    .onAppear(){
-                        firestoreManager.fetchListingsUser(currentUserID: user.id)
-                    }
+//                    .onAppear(){
+//                        firestoreManager.fetchListingsUser()
+//                    }
                     .refreshable {
-                        firestoreManager.fetchListingsUser(currentUserID: user.id)
+                        firestoreManager.fetchListingsUser()
                     }
                 }
                 .navigationTitle("My Listings")
@@ -42,7 +42,7 @@ struct MyListingOrganizationView: View {
                 .font(.headline.bold())
                 .toolbar {
                     ToolbarItem(placement: .navigationBarLeading){
-                        NavigationLink(destination: AddListingView()){
+                        NavigationLink(destination: AddListingView(userID: user.id)){
                             Text("Add Listing")
                         }
                         .buttonStyle(.bordered)

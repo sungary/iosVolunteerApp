@@ -27,9 +27,9 @@ struct HomeView: View {
                             }
                         }
                     }
-                    .onAppear() {
-                        firestoreManager.fetchListingsAll()
-                    }
+//                    .onAppear() {
+//                        firestoreManager.fetchListingsAll()
+//                    }
                     .refreshable {
                         firestoreManager.fetchListingsAll()
                     }
