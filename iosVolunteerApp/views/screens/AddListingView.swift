@@ -26,68 +26,65 @@ struct AddListingView: View {
     @State private var buttonDisabled = false
     
     var body: some View {
-        VStack() {
-            VStack(){
-                Text("Create New Listing")
-                    .font(.largeTitle)
-                    .bold()
-                
-                TextField(text: $name, prompt: Text("Name")) {
-                    Text("Event Name")
-                }
-                .padding()
-                .background(Color(red: 220/256, green: 220/256, blue: 220/256))
-                .cornerRadius(25)
-                
-                
-                TextField(text: $location, prompt: Text("Location")) {
-                    Text("Ex. 111 First St, Los Angeles, CA 90007")
-                }
-                .padding()
-                .background(Color(red: 220/256, green: 220/256, blue: 220/256))
-                .cornerRadius(25)
-                
-                TextField(text: $description, prompt: Text("Description")) {
-                    Text("Event Description")
-                }
-                .padding()
-                .background(Color(red: 220/256, green: 220/256, blue: 220/256))
-                .cornerRadius(25)
-                
-                Button(action: {
-                    buttonDisabled = true
-                    var temp = ""
-                    //DispatchQueue.main.asyncAfter(deadline: .now() + 1){
-                        Task {
-                            await firestoreManager.createNewListing(createdBy: userID, name: name, location: location, description: description)
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 1){
-                                let _ = print("test3 " + temp)
-                                if(temp == "success"){
-                                    showAlert = true
-                                    alertType = .success
-                                } else if(temp != ""){
-                                    showAlert = true
-                                    alertType = .error
-                                }
-                                buttonDisabled = false
-                            }
-                            
-                        }
-                    //}
-                }) {
-                    Text("Add Listing")
-                }
-                .disabled(buttonDisabled)
-                .padding()
-                .buttonStyle(.bordered)
-                .cornerRadius(25)
-                .tint(.green)
-                .alert(isPresented: $showAlert){
-                    getPresentAlert()
-                }
+        
+        VStack(){
+            Text("Create New Listing")
+                .font(.largeTitle)
+                .bold()
+            
+            TextField(text: $name, prompt: Text("Name")) {
+                Text("Event Name")
             }
             .padding()
+            .background(Color(red: 220/256, green: 220/256, blue: 220/256))
+            .cornerRadius(25)
+            
+            TextField(text: $location, prompt: Text("Location")) {
+                Text("Ex. 111 First St, Los Angeles, CA 90007")
+            }
+            .padding()
+            .background(Color(red: 220/256, green: 220/256, blue: 220/256))
+            .cornerRadius(25)
+            
+            TextField(text: $description, prompt: Text("Description")) {
+                Text("Event Description")
+            }
+            .padding()
+            .background(Color(red: 220/256, green: 220/256, blue: 220/256))
+            .cornerRadius(25)
+            
+            Button(action: {
+                buttonDisabled = true
+                // completion handler: once the createNewListing is done, run the below
+                let results: (String) -> Void = { result in
+                    if(result == "success"){
+                        showAlert = true
+                        alertType = .success
+                    } else if(result != ""){
+                        showAlert = true
+                        alertType = .error
+                    }
+                    buttonDisabled = false
+                }
+                // calls createNewListing function to add new listing the results of this will be in completion Handler results
+                firestoreManager.createNewListing(createdBy: userID, name: name, location: location, description: description, completionHandler: results)
+                
+            }) {
+                Text("Add Listing")
+            }
+            .disabled(buttonDisabled)
+            .padding()
+            .buttonStyle(.bordered)
+            .cornerRadius(25)
+            .tint(.green)
+            .alert(isPresented: $showAlert){
+                getPresentAlert()
+            }
+            
         }
+        .padding()
+        .navigationBarBackButtonHidden(buttonDisabled)
+        
     }
     
     func getPresentAlert() -> Alert {

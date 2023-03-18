@@ -60,9 +60,7 @@ struct MyListingOrganizationView: View {
                         .tint(.blue)
                     }
                 }
-                
             }
-            
         }
         
     }

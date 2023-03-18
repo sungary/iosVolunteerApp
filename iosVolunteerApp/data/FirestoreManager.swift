@@ -47,29 +47,68 @@ class FirestoreManager: ObservableObject {
             if let document = document, document.exists {
                 let data = document.data()
                 
+                // resets array
+                self.myListings.removeAll()
+                
                 // list of lisings that the user has
                 let arr: [String] = data?["myListings"] as! [String]
                 
                 // using the above list, search through all listings and get the ones that below to the user
-                db.collection("listings").whereField(FieldPath.documentID(), in: arr).getDocuments() { (querySnapshot, err) in
-                    if let err = err {
-                        print("error getting documents for my listing: \(err)")
-                    } else {
-                        
-                        let documentListing = querySnapshot!.documents
-                        
-                        // stores the lisings into the myListings so that frontend can fetch it
-                        self.myListings = documentListing.map{ (queryDocumentSnapshot) -> Listing in
-                            let lisingData = queryDocumentSnapshot.data()
-                            
-                            let id = queryDocumentSnapshot.documentID
-                            let name = lisingData["name"] as? String ?? ""
-                            let description = lisingData["description"] as? String ?? ""
-                            let createdBy = lisingData["createdBy"] as? String ?? ""
-                            let createdOn = lisingData["createdOn"] as? String ?? ""
-                            let location = lisingData["location"] as? String ?? ""
-                            
-                            return Listing(id: id, name: name, description: description, createdBy: createdBy, createdOn: createdOn, location: location)
+                if(arr.count > 10) {
+                    // maxArr is the array size in sets of 10
+                    let maxArr = arr.count/10
+                    // goes through each set to fetch the data
+                    for i in 0...maxArr {
+                        let a = i*10
+                        var b = 0
+                        if(i == maxArr){
+                            b = arr.count-1
+                        } else {
+                            b = ((i+1)*10)-1
+                        }
+                        let tempArr: [String] = Array(arr[a...b])
+                        db.collection("listings").whereField(FieldPath.documentID(), in: tempArr).getDocuments() { (querySnapshot, err) in
+                            if let err = err {
+                                print("error getting documents for my listing: \(err)")
+                            } else {
+                                let documentListing = querySnapshot!.documents
+                                // stores the lisings into the myListings so that frontend can fetch it
+                                self.myListings.append(contentsOf: documentListing.map{ (queryDocumentSnapshot) -> Listing in
+                                    let lisingData = queryDocumentSnapshot.data()
+
+                                    let id = queryDocumentSnapshot.documentID
+                                    let name = lisingData["name"] as? String ?? ""
+                                    let description = lisingData["description"] as? String ?? ""
+                                    let createdBy = lisingData["createdBy"] as? String ?? ""
+                                    let createdOn = lisingData["createdOn"] as? String ?? ""
+                                    let location = lisingData["location"] as? String ?? ""
+
+                                    return Listing(id: id, name: name, description: description, createdBy: createdBy, createdOn: createdOn, location: location)
+                                })
+                            }
+                        }
+                    }
+                } else {
+                    db.collection("listings").whereField(FieldPath.documentID(), in: arr).getDocuments() { (querySnapshot, err) in
+                        if let err = err {
+                            print("error getting documents for my listing: \(err)")
+                        } else {
+
+                            let documentListing = querySnapshot!.documents
+
+                            // stores the lisings into the myListings so that frontend can fetch it
+                            self.myListings = documentListing.map{ (queryDocumentSnapshot) -> Listing in
+                                let lisingData = queryDocumentSnapshot.data()
+
+                                let id = queryDocumentSnapshot.documentID
+                                let name = lisingData["name"] as? String ?? ""
+                                let description = lisingData["description"] as? String ?? ""
+                                let createdBy = lisingData["createdBy"] as? String ?? ""
+                                let createdOn = lisingData["createdOn"] as? String ?? ""
+                                let location = lisingData["location"] as? String ?? ""
+
+                                return Listing(id: id, name: name, description: description, createdBy: createdBy, createdOn: createdOn, location: location)
+                            }
                         }
                     }
                 }
@@ -189,10 +228,7 @@ class FirestoreManager: ObservableObject {
         
     }
     
-    @MainActor
-    func createNewListing(createdBy: String, name: String, location: String, description: String, completionHandler: (String) -> Void) async {
-        var result = ""
-        
+    func createNewListing(createdBy: String, name: String, location: String, description: String, completionHandler: @escaping (String) -> Void) {
         if(name != "" && location != "" && description != "") {
             let db = Firestore.firestore()
             var ref: DocumentReference? = nil
@@ -206,27 +242,20 @@ class FirestoreManager: ObservableObject {
             ]) { err in
                 if let err = err {
                     print("Error adding listing: \(err)")
-                    result = "error adding listing"
+                    completionHandler("error adding listing")
                 } else {
                     // documented added sucessfully
-                    result = "success"
-                    print("test1: \(result)")
                     // add document id to users listing array
                     let docID = ref?.documentID ?? ""
                     let tempRef = db.collection("users").document(Auth.auth().currentUser?.uid ?? "")
                     tempRef.updateData([
                         "myListings": FieldValue.arrayUnion([docID])
                     ])
+                    completionHandler("success")
                 }
             }
         } else {
-            result = "Error: missing fields"
-        }
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1){
-            print("test2: \(result)")
-            
+            completionHandler("Error: missing fields")
         }
     }
-    
 }
