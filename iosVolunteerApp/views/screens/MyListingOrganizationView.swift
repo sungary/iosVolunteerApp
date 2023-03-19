@@ -10,7 +10,7 @@ struct MyListingOrganizationView: View {
             NavigationView {
                 VStack {
                     List(firestoreManager.myListings) { listing in
-                        NavigationLink(destination: ViewListingView(listing: listing)) {
+                        NavigationLink(destination: ViewMyListingView(listing: listing)) {
                             HStack {
                                 Button {
                                 } label: {
