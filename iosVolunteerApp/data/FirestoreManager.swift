@@ -258,4 +258,38 @@ class FirestoreManager: ObservableObject {
             completionHandler("Error: missing fields")
         }
     }
+    
+    func updateListing(myListing: Listing, completionHandler: @escaping (String) -> Void) {
+        let db = Firestore.firestore()
+        let docRef = db.collection("listings").document(myListing.id)
+        
+        docRef.updateData([
+            "name": myListing.name,
+            "description": myListing.description,
+            "location": myListing.location
+        ]) { err in
+            if let err = err {
+                print("Error updating document: \(err)")
+                completionHandler("error")
+            } else {
+                //print("Listing successfully updated")
+                self.fetchListingsUser()
+                completionHandler("success")
+            }
+        }
+    }
+    
+    func deleteListing(listingID: String, completionHandler: @escaping (String) -> Void) {
+        let db = Firestore.firestore()
+        db.collection("listings").document(listingID).delete() { err in
+            if let err = err {
+                print("Error deleting listing \(err)")
+                completionHandler("error")
+            } else {
+                //print("Listing successfully deleted")
+                self.fetchListingsUser()
+                completionHandler("success")
+            }
+        }
+    }
 }

@@ -21,7 +21,11 @@ struct HomeView: View {
 
                                 VStack(alignment: .leading) {
                                     Text(listing.name)
+                                        .font(.headline)
+                                        .fontWeight(.semibold)
                                     Text(listing.description)
+                                        .font(.body)
+                                        .fontWeight(.regular)
                                 }
                                 .padding()
                             }

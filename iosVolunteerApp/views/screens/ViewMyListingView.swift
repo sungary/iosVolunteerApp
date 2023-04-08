@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ViewMyListingView: View {
+    @EnvironmentObject var firestoreManager: FirestoreManager
     
     @State var listing: Listing
     @State var isEditing: Bool = false
@@ -28,21 +29,20 @@ struct ViewMyListingView: View {
                         .padding()
                 }
                 .navigationTitle(listing.name)
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarTrailing){
-                        Button {
-                            isEditing.toggle()
-                        } label: {
-                            Label("Edit", systemImage: "pencil")
-                        }
-                        .buttonStyle(.bordered)
-                        .cornerRadius(25)
-                        .tint(.blue)
-                    }
-                }
             }
         }
-        .padding()
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing){
+                Button {
+                    isEditing.toggle()
+                } label: {
+                    Label("Edit", systemImage: "pencil")
+                }
+                .buttonStyle(.bordered)
+                .cornerRadius(25)
+                .tint(.blue)
+            }
+        }
     }
 }
 

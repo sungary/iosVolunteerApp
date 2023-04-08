@@ -4,7 +4,7 @@ struct MyListingOrganizationView: View {
     @EnvironmentObject var firestoreManager: FirestoreManager
     @Binding var user: User
     @Binding var navigationManager: SideBarNavigationManager
-    
+
     var body: some View {
         ZStack {
             NavigationView {
@@ -21,11 +21,14 @@ struct MyListingOrganizationView: View {
                                 
                                 VStack(alignment: .leading) {
                                     Text(listing.name)
+                                        .font(.headline)
+                                        .fontWeight(.semibold)
                                     Text(listing.description)
+                                        .font(.body)
+                                        .fontWeight(.regular)
                                 }
                                 .padding()
                             }
-                            
                         }
                         
                     }
