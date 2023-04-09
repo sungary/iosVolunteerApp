@@ -21,7 +21,7 @@ struct ContentView: View {
                         case .myListing:
                             switch user.type {
                             case "V":
-                                MyListingVolunteerView()
+                                MyListingVolunteerView(user: $user, navigationManager: $navigationManager)
                             case "O":
                                 MyListingOrganizationView(user: $user, navigationManager: $navigationManager)
                             default:

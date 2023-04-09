@@ -32,9 +32,6 @@ struct MyListingOrganizationView: View {
                         }
                         
                     }
-//                    .onAppear(){
-//                        firestoreManager.fetchListingsUser()
-//                    }
                     .refreshable {
                         firestoreManager.fetchListingsUser()
                     }
@@ -65,7 +62,6 @@ struct MyListingOrganizationView: View {
                 }
             }
         }
-        
     }
 }
 

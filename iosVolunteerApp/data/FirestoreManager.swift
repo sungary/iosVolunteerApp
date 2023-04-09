@@ -88,7 +88,7 @@ class FirestoreManager: ObservableObject {
                             }
                         }
                     }
-                } else {
+                } else if (arr.count > 0){
                     db.collection("listings").whereField(FieldPath.documentID(), in: arr).getDocuments() { (querySnapshot, err) in
                         if let err = err {
                             print("error getting documents for my listing: \(err)")
@@ -284,6 +284,24 @@ class FirestoreManager: ObservableObject {
         db.collection("listings").document(listingID).delete() { err in
             if let err = err {
                 print("Error deleting listing \(err)")
+                completionHandler("error")
+            } else {
+                //print("Listing successfully deleted")
+                self.fetchListingsUser()
+                completionHandler("success")
+            }
+        }
+    }
+    
+    func addMyFavorites(listingID: String, completionHandler: @escaping (String) -> Void) {
+        let db = Firestore.firestore()
+        let docRefUser = db.collection("users").document(Auth.auth().currentUser?.uid ?? "")
+        
+        docRefUser.updateData([
+            "myListings": FieldValue.arrayUnion([listingID])
+        ]) { err in
+            if let err = err {
+                print("Error adding my favorites \(err)")
                 completionHandler("error")
             } else {
                 //print("Listing successfully deleted")

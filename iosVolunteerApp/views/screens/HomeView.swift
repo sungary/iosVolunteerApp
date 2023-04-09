@@ -4,6 +4,7 @@ struct HomeView: View {
     @EnvironmentObject var firestoreManager: FirestoreManager
     @Binding var user: User
     @Binding var navigationManager: SideBarNavigationManager
+    @State private var buttonDisabled = false
     
     var body: some View {
         ZStack {
@@ -13,11 +14,24 @@ struct HomeView: View {
                         NavigationLink(destination: ViewListingView(listing: listing)) {
                             HStack {
                                 Button {
+                                    buttonDisabled = true
+                                    
+                                    let results: (String) -> Void = { result in
+                                        if(result == "success"){
+                                            
+                                        } else if(result != ""){
+                                            
+                                        }
+                                        buttonDisabled = false
+                                    }
+                                    
+                                    firestoreManager.addMyFavorites(listingID: listing.id, completionHandler: results)
                                 } label: {
                                     Label("Favorite", systemImage: "star")
                                         .labelStyle(.iconOnly)
                                 }
                                 .buttonStyle(.borderless)
+                                .disabled(buttonDisabled)
 
                                 VStack(alignment: .leading) {
                                     Text(listing.name)
@@ -31,9 +45,6 @@ struct HomeView: View {
                             }
                         }
                     }
-//                    .onAppear() {
-//                        firestoreManager.fetchListingsAll()
-//                    }
                     .refreshable {
                         firestoreManager.fetchListingsAll()
                     }
