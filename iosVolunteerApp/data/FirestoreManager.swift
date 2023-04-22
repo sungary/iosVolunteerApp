@@ -35,8 +35,6 @@ class FirestoreManager: ObservableObject {
                 let location = data["location"] as? String ?? ""
                 
                 let favorited = self.myListings.contains(where: { $0.id == id })
-                    
-                print(favorited)
                 
                 return Listing(id: id, name: name, description: description, createdBy: createdBy, createdOn: createdOn, location: location, favorited: favorited)
             }

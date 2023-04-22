@@ -59,9 +59,6 @@ struct HomeView: View {
                                             }
                                             firestoreManager.addMyFavorites(listingID: listing.id, completionHandler: results)
                                         }
-                                        
-                                        
-                                        
                                     } label: {
                                         Label("Favorite", systemImage: listing.favorited ? "star.fill": "star")
                                             .labelStyle(.iconOnly)
