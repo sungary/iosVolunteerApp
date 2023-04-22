@@ -16,11 +16,15 @@ struct ViewListingEditView: View {
     @State var name: String = ""
     @State var location: String = ""
     @State var description: String = ""
-    @State private var showAlert = false
+    @State var timeStart: Date = Date()
+    @State var timeEnd: Date = Date()
+    @State var showAlert = false
+    
     enum AlertType {
         case successDelete
         case successUpdate
         case error
+        case errorTime
     }
     @State private var alertType: AlertType?
     @State private var buttonDisabled = false
@@ -74,6 +78,26 @@ struct ViewListingEditView: View {
                 self.location = listing.location
             }
             
+            DatePicker(
+                "Start Date & Time",
+                selection: $timeStart,
+                displayedComponents: [.date, .hourAndMinute]
+            )
+            .datePickerStyle(.automatic)
+            .onAppear() {
+                self.timeStart = listing.timeStart
+            }
+            
+            DatePicker(
+                "End Date & Time",
+                selection: $timeEnd,
+                displayedComponents: [.date, .hourAndMinute]
+            )
+            .datePickerStyle(.automatic)
+            .onAppear() {
+                self.timeEnd = listing.timeEnd
+            }
+            
             TextField(text: $description, prompt: Text("Description")) {
                 Text("Event Description")
             }
@@ -85,25 +109,33 @@ struct ViewListingEditView: View {
             .cornerRadius(25)
             
             Button {
-                buttonDisabled = true
                 
-                listing.name = name
-                listing.description = description
-                listing.location = location
-                
-                let results: (String) -> Void = { result in
-                    if(result == "success"){
-                        showAlert = true
-                        alertType = .successUpdate
-                    } else if(result != ""){
-                        showAlert = true
-                        alertType = .error
+                //check start/end time logic
+                if(timeStart < timeEnd) {
+                    buttonDisabled = true
+                    
+                    listing.name = name
+                    listing.description = description
+                    listing.location = location
+                    listing.timeStart = timeStart
+                    listing.timeEnd = timeEnd
+                    
+                    let results: (String) -> Void = { result in
+                        if(result == "success"){
+                            showAlert = true
+                            alertType = .successUpdate
+                        } else if(result != ""){
+                            showAlert = true
+                            alertType = .error
+                        }
+                        buttonDisabled = false
                     }
-                    buttonDisabled = false
+                    
+                    firestoreManager.updateListing(myListing: listing, completionHandler: results)
+                } else {
+                    showAlert = true
+                    alertType = .errorTime
                 }
-                
-                firestoreManager.updateListing(myListing: listing, completionHandler: results)
-                
             } label: {
                 Text("Save")
             }
@@ -146,6 +178,16 @@ struct ViewListingEditView: View {
             return Alert(
                 title: Text("Error"),
                 message: Text("Please try again"),
+                dismissButton: Alert.Button.default(
+                    Text("OK"),
+                    action: {
+                        showAlert = false
+                    })
+            )
+        case .errorTime:
+            return Alert(
+                title: Text("Error"),
+                message: Text("Please check your Start/End Times"),
                 dismissButton: Alert.Button.default(
                     Text("OK"),
                     action: {

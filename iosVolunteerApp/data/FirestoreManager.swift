@@ -30,13 +30,17 @@ class FirestoreManager: ObservableObject {
                 let id = queryDocumentSnapshot.documentID
                 let name = data["name"] as? String ?? ""
                 let description = data["description"] as? String ?? ""
+                let tempTimeS = data["timeStart"] as? Timestamp
+                let timeStart = tempTimeS?.dateValue() ?? Date()
+                let tempTimeE = data["timeEnd"] as? Timestamp
+                let timeEnd = tempTimeE?.dateValue() ?? Date()
                 let createdBy = data["createdBy"] as? String ?? ""
                 let createdOn = data["createdOn"] as? String ?? ""
                 let location = data["location"] as? String ?? ""
                 
                 let favorited = self.myListings.contains(where: { $0.id == id })
                 
-                return Listing(id: id, name: name, description: description, createdBy: createdBy, createdOn: createdOn, location: location, favorited: favorited)
+                return Listing(id: id, name: name, description: description, timeStart: timeStart, timeEnd: timeEnd, createdBy: createdBy, createdOn: createdOn, location: location, favorited: favorited)
             }
         }
     }
@@ -80,12 +84,17 @@ class FirestoreManager: ObservableObject {
                                     let id = queryDocumentSnapshot.documentID
                                     let name = lisingData["name"] as? String ?? ""
                                     let description = lisingData["description"] as? String ?? ""
+                                    let tempTimeS = lisingData["timeStart"] as? Timestamp
+                                    let timeStart = tempTimeS?.dateValue() ?? Date()
+                                    let tempTimeE = lisingData["timeEnd"] as? Timestamp
+                                    let timeEnd = tempTimeE?.dateValue() ?? Date()
                                     let createdBy = lisingData["createdBy"] as? String ?? ""
                                     let createdOn = lisingData["createdOn"] as? String ?? ""
                                     let location = lisingData["location"] as? String ?? ""
+                                    
                                     let favorited = true
                                     
-                                    return Listing(id: id, name: name, description: description, createdBy: createdBy, createdOn: createdOn, location: location, favorited: favorited)
+                                    return Listing(id: id, name: name, description: description, timeStart: timeStart, timeEnd: timeEnd, createdBy: createdBy, createdOn: createdOn, location: location, favorited: favorited)
                                 })
                             }
                         }
@@ -105,12 +114,16 @@ class FirestoreManager: ObservableObject {
                                 let id = queryDocumentSnapshot.documentID
                                 let name = lisingData["name"] as? String ?? ""
                                 let description = lisingData["description"] as? String ?? ""
+                                let tempTimeS = lisingData["timeStart"] as? Timestamp
+                                let timeStart = tempTimeS?.dateValue() ?? Date()
+                                let tempTimeE = lisingData["timeEnd"] as? Timestamp
+                                let timeEnd = tempTimeE?.dateValue() ?? Date()
                                 let createdBy = lisingData["createdBy"] as? String ?? ""
                                 let createdOn = lisingData["createdOn"] as? String ?? ""
                                 let location = lisingData["location"] as? String ?? ""
                                 let favorited = true
                                 
-                                return Listing(id: id, name: name, description: description, createdBy: createdBy, createdOn: createdOn, location: location, favorited: favorited)
+                                return Listing(id: id, name: name, description: description, timeStart: timeStart, timeEnd: timeEnd, createdBy: createdBy, createdOn: createdOn, location: location, favorited: favorited)
                             }
                         }
                     }
@@ -158,12 +171,16 @@ class FirestoreManager: ObservableObject {
                                     let id = queryDocumentSnapshot.documentID
                                     let name = lisingData["name"] as? String ?? ""
                                     let description = lisingData["description"] as? String ?? ""
+                                    let tempTimeS = lisingData["timeStart"] as? Timestamp
+                                    let timeStart = tempTimeS?.dateValue() ?? Date()
+                                    let tempTimeE = lisingData["timeEnd"] as? Timestamp
+                                    let timeEnd = tempTimeE?.dateValue() ?? Date()
                                     let createdBy = lisingData["createdBy"] as? String ?? ""
                                     let createdOn = lisingData["createdOn"] as? String ?? ""
                                     let location = lisingData["location"] as? String ?? ""
                                     let favorited = true
                                     
-                                    return Listing(id: id, name: name, description: description, createdBy: createdBy, createdOn: createdOn, location: location, favorited: favorited)
+                                    return Listing(id: id, name: name, description: description, timeStart: timeStart, timeEnd: timeEnd, createdBy: createdBy, createdOn: createdOn, location: location, favorited: favorited)
                                 })
                             }
                         }
@@ -184,12 +201,16 @@ class FirestoreManager: ObservableObject {
                                 let id = queryDocumentSnapshot.documentID
                                 let name = lisingData["name"] as? String ?? ""
                                 let description = lisingData["description"] as? String ?? ""
+                                let tempTimeS = lisingData["timeStart"] as? Timestamp
+                                let timeStart = tempTimeS?.dateValue() ?? Date()
+                                let tempTimeE = lisingData["timeEnd"] as? Timestamp
+                                let timeEnd = tempTimeE?.dateValue() ?? Date()
                                 let createdBy = lisingData["createdBy"] as? String ?? ""
                                 let createdOn = lisingData["createdOn"] as? String ?? ""
                                 let location = lisingData["location"] as? String ?? ""
                                 let favorited = true
                                 
-                                return Listing(id: id, name: name, description: description, createdBy: createdBy, createdOn: createdOn, location: location, favorited: favorited)
+                                return Listing(id: id, name: name, description: description, timeStart: timeStart, timeEnd: timeEnd, createdBy: createdBy, createdOn: createdOn, location: location, favorited: favorited)
                             }
                             completionHandler("success")
                         }
@@ -309,7 +330,8 @@ class FirestoreManager: ObservableObject {
         let firebaseAuth = Auth.auth()
         do {
             try firebaseAuth.signOut()
-            
+            self.myListings.removeAll()
+            self.allListings.removeAll()
         } catch let signOutError as NSError {
             print("Error signing out: %@", signOutError)
         }
@@ -318,7 +340,7 @@ class FirestoreManager: ObservableObject {
         
     }
     
-    func createNewListing(createdBy: String, name: String, location: String, description: String, completionHandler: @escaping (String) -> Void) {
+    func createNewListing(createdBy: String, name: String, location: String, description: String, timeStart: Date, timeEnd: Date, completionHandler: @escaping (String) -> Void) {
         if(name != "" && location != "" && description != "") {
             let db = Firestore.firestore()
             var ref: DocumentReference? = nil
@@ -327,6 +349,8 @@ class FirestoreManager: ObservableObject {
                 "name": name,
                 "location": location,
                 "description": description,
+                "timeStart": timeStart,
+                "timeEnd": timeEnd,
                 "createdBy": createdBy,
                 "createdOn": Timestamp(date: Date())
             ]) { err in
@@ -356,6 +380,8 @@ class FirestoreManager: ObservableObject {
         docRef.updateData([
             "name": myListing.name,
             "description": myListing.description,
+            "timeStart": myListing.timeStart,
+            "timeEnd": myListing.timeEnd,
             "location": myListing.location
         ]) { err in
             if let err = err {

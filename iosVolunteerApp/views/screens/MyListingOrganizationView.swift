@@ -12,12 +12,6 @@ struct MyListingOrganizationView: View {
                     List(firestoreManager.myListings) { listing in
                         NavigationLink(destination: ViewMyListingView(listing: listing)) {
                             HStack {
-                                Button {
-                                } label: {
-                                    Label("Favorite", systemImage: "star")
-                                        .labelStyle(.iconOnly)
-                                }
-                                .buttonStyle(.borderless)
                                 
                                 VStack(alignment: .leading) {
                                     Text(listing.name)
