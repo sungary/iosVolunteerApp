@@ -14,4 +14,5 @@ struct Listing: Identifiable {
     var createdBy: String = ""
     var createdOn: String = ""
     var location: String = ""
+    var favorited: Bool = false
 }

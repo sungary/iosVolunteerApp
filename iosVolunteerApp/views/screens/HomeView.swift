@@ -10,44 +10,73 @@ struct HomeView: View {
         ZStack {
             NavigationView {
                 VStack {
-                    List(firestoreManager.allListings) { listing in
-                        NavigationLink(destination: ViewListingView(listing: listing)) {
-                            HStack {
-                                Button {
-                                    buttonDisabled = true
-                                    
-                                    let results: (String) -> Void = { result in
-                                        if(result == "success"){
-                                            
-                                        } else if(result != ""){
-                                            
-                                        }
-                                        buttonDisabled = false
+                    switch user.type {
+                    case "O":
+                        List(firestoreManager.allListings) { listing in
+                            NavigationLink(destination: ViewListingView(listing: listing)) {
+                                HStack {
+                                    VStack(alignment: .leading) {
+                                        Text(listing.name)
+                                            .font(.headline)
+                                            .fontWeight(.semibold)
+                                        Text(listing.description)
+                                            .font(.body)
+                                            .fontWeight(.regular)
                                     }
-                                    
-                                    firestoreManager.addMyFavorites(listingID: listing.id, completionHandler: results)
-                                } label: {
-                                    Label("Favorite", systemImage: "star")
-                                        .labelStyle(.iconOnly)
+                                    .padding()
                                 }
-                                .buttonStyle(.borderless)
-                                .disabled(buttonDisabled)
-
-                                VStack(alignment: .leading) {
-                                    Text(listing.name)
-                                        .font(.headline)
-                                        .fontWeight(.semibold)
-                                    Text(listing.description)
-                                        .font(.body)
-                                        .fontWeight(.regular)
-                                }
-                                .padding()
                             }
                         }
+                        .refreshable {
+                            firestoreManager.fetchListingsAll()
+                        }
+                    case "V":
+                        List(firestoreManager.allListings) { listing in
+                            NavigationLink(destination: ViewListingView(listing: listing)) {
+                                HStack {
+                                    Button {
+                                        buttonDisabled = true
+                                        
+                                        let results: (String) -> Void = { result in
+                                            if(result == "success"){
+                                                
+                                            } else if(result != ""){
+                                                
+                                            }
+                                            buttonDisabled = false
+                                        }
+                                        
+                                        firestoreManager.addMyFavorites(listingID: listing.id, completionHandler: results)
+                                    } label: {
+                                        Label("Favorite", systemImage: "star")
+                                            .labelStyle(.iconOnly)
+                                    }
+                                    .buttonStyle(.borderless)
+                                    .disabled(buttonDisabled)
+
+                                    VStack(alignment: .leading) {
+                                        Text(listing.name)
+                                            .font(.headline)
+                                            .fontWeight(.semibold)
+                                        Text(listing.description)
+                                            .font(.body)
+                                            .fontWeight(.regular)
+                                    }
+                                    .padding()
+                                }
+                            }
+                        }
+                        .refreshable {
+                            firestoreManager.fetchListingsAll()
+                        }
+                    default:
+                        VStack {
+                            Text("Error, shouldn't be here")
+                        }
+                        
                     }
-                    .refreshable {
-                        firestoreManager.fetchListingsAll()
-                    }
+                
+                    
                 }
                 .navigationBarTitle("Home", displayMode: .automatic)
                 .toolbar {
