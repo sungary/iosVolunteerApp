@@ -34,12 +34,15 @@ class FirestoreManager: ObservableObject {
                 let createdOn = data["createdOn"] as? String ?? ""
                 let location = data["location"] as? String ?? ""
                 
-                return Listing(id: id, name: name, description: description, createdBy: createdBy, createdOn: createdOn, location: location)
+                let favorited = self.myListings.contains(where: { $0.id == id })
+                    
+                print(favorited)
                 
+                return Listing(id: id, name: name, description: description, createdBy: createdBy, createdOn: createdOn, location: location, favorited: favorited)
             }
         }
     }
-    
+    // to fetch user listings
     func fetchListingsUser() {
         let db = Firestore.firestore()
         let docRefUser = db.collection("users").document(Auth.auth().currentUser?.uid ?? "")
@@ -82,8 +85,9 @@ class FirestoreManager: ObservableObject {
                                     let createdBy = lisingData["createdBy"] as? String ?? ""
                                     let createdOn = lisingData["createdOn"] as? String ?? ""
                                     let location = lisingData["location"] as? String ?? ""
-
-                                    return Listing(id: id, name: name, description: description, createdBy: createdBy, createdOn: createdOn, location: location)
+                                    let favorited = true
+                                    
+                                    return Listing(id: id, name: name, description: description, createdBy: createdBy, createdOn: createdOn, location: location, favorited: favorited)
                                 })
                             }
                         }
@@ -106,14 +110,96 @@ class FirestoreManager: ObservableObject {
                                 let createdBy = lisingData["createdBy"] as? String ?? ""
                                 let createdOn = lisingData["createdOn"] as? String ?? ""
                                 let location = lisingData["location"] as? String ?? ""
-
-                                return Listing(id: id, name: name, description: description, createdBy: createdBy, createdOn: createdOn, location: location)
+                                let favorited = true
+                                
+                                return Listing(id: id, name: name, description: description, createdBy: createdBy, createdOn: createdOn, location: location, favorited: favorited)
                             }
                         }
                     }
                 }
             }
         }
+    }
+    // to fetch user listing the first time in sign in
+    func fetchListingsUser(completionHandler: @escaping (String) -> Void) {
+        let db = Firestore.firestore()
+        let docRefUser = db.collection("users").document(Auth.auth().currentUser?.uid ?? "")
+        docRefUser.getDocument { (document, error) in
+            if let document = document, document.exists {
+                let data = document.data()
+                
+                // resets array
+                self.myListings.removeAll()
+                
+                // list of lisings that the user has
+                let arr: [String] = data?["myListings"] as! [String]
+                
+                // using the above list, search through all listings and get the ones that below to the user
+                if(arr.count > 10) {
+                    // maxArr is the array size in sets of 10
+                    let maxArr = arr.count/10
+                    // goes through each set to fetch the data
+                    for i in 0...maxArr {
+                        let a = i*10
+                        var b = 0
+                        if(i == maxArr){
+                            b = arr.count-1
+                        } else {
+                            b = ((i+1)*10)-1
+                        }
+                        let tempArr: [String] = Array(arr[a...b])
+                        db.collection("listings").whereField(FieldPath.documentID(), in: tempArr).getDocuments() { (querySnapshot, err) in
+                            if let err = err {
+                                print("error getting documents for my listing: \(err)")
+                            } else {
+                                let documentListing = querySnapshot!.documents
+                                // stores the lisings into the myListings so that frontend can fetch it
+                                self.myListings.append(contentsOf: documentListing.map{ (queryDocumentSnapshot) -> Listing in
+                                    let lisingData = queryDocumentSnapshot.data()
+
+                                    let id = queryDocumentSnapshot.documentID
+                                    let name = lisingData["name"] as? String ?? ""
+                                    let description = lisingData["description"] as? String ?? ""
+                                    let createdBy = lisingData["createdBy"] as? String ?? ""
+                                    let createdOn = lisingData["createdOn"] as? String ?? ""
+                                    let location = lisingData["location"] as? String ?? ""
+                                    let favorited = true
+                                    
+                                    return Listing(id: id, name: name, description: description, createdBy: createdBy, createdOn: createdOn, location: location, favorited: favorited)
+                                })
+                            }
+                        }
+                    }
+                    completionHandler("success")
+                } else if (arr.count > 0){
+                    db.collection("listings").whereField(FieldPath.documentID(), in: arr).getDocuments() { (querySnapshot, err) in
+                        if let err = err {
+                            print("error getting documents for my listing: \(err)")
+                        } else {
+
+                            let documentListing = querySnapshot!.documents
+
+                            // stores the lisings into the myListings so that frontend can fetch it
+                            self.myListings = documentListing.map{ (queryDocumentSnapshot) -> Listing in
+                                let lisingData = queryDocumentSnapshot.data()
+
+                                let id = queryDocumentSnapshot.documentID
+                                let name = lisingData["name"] as? String ?? ""
+                                let description = lisingData["description"] as? String ?? ""
+                                let createdBy = lisingData["createdBy"] as? String ?? ""
+                                let createdOn = lisingData["createdOn"] as? String ?? ""
+                                let location = lisingData["location"] as? String ?? ""
+                                let favorited = true
+                                
+                                return Listing(id: id, name: name, description: description, createdBy: createdBy, createdOn: createdOn, location: location, favorited: favorited)
+                            }
+                            completionHandler("success")
+                        }
+                    }
+                }
+            }
+        }
+        
     }
     
     // create new user through Authentication
@@ -198,6 +284,16 @@ class FirestoreManager: ObservableObject {
                         myListings: data?["myListings"] as? [String] ?? [],
                         isSignedIn: true
                     )
+                    
+                    let results: (String) -> Void = { result in
+                        if(result == "success"){
+                            self.fetchListingsAll()
+                        } else if(result != ""){
+                            
+                        }
+                    }
+                    self.fetchListingsUser(completionHandler: results)
+                    //self.fetchListingsAll()
                 }
             }
             catch {
@@ -206,10 +302,6 @@ class FirestoreManager: ObservableObject {
         }
         catch {
             print("Error Signing In", error.localizedDescription)
-        }
-        if(user.id != ""){
-            fetchListingsAll()
-            fetchListingsUser()
         }
         
         return user
@@ -305,6 +397,30 @@ class FirestoreManager: ObservableObject {
                 completionHandler("error")
             } else {
                 //print("Listing successfully deleted")
+                if let index = self.allListings.firstIndex(where: {$0.id == listingID}){
+                    self.allListings[index].favorited = true
+                }
+                self.fetchListingsUser()
+                completionHandler("success")
+            }
+        }
+    }
+    
+    func removeMyFavorites(listingID: String, completionHandler: @escaping (String) -> Void) {
+        let db = Firestore.firestore()
+        let docRefUser = db.collection("users").document(Auth.auth().currentUser?.uid ?? "")
+        
+        docRefUser.updateData([
+            "myListings": FieldValue.arrayRemove([listingID])
+        ]) { err in
+            if let err = err {
+                print("Error adding my favorites \(err)")
+                completionHandler("error")
+            } else {
+                //print("Listing successfully deleted")
+                if let index = self.allListings.firstIndex(where: {$0.id == listingID}){
+                    self.allListings[index].favorited = false
+                }
                 self.fetchListingsUser()
                 completionHandler("success")
             }

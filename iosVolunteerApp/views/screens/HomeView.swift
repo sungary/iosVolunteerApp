@@ -37,23 +37,40 @@ struct HomeView: View {
                                     Button {
                                         buttonDisabled = true
                                         
-                                        let results: (String) -> Void = { result in
-                                            if(result == "success"){
-                                                
-                                            } else if(result != ""){
-                                                
+                                        switch listing.favorited {
+                                        case true:
+                                            let results: (String) -> Void = { result in
+                                                if(result == "success"){
+                                                    
+                                                } else if(result != ""){
+                                                    
+                                                }
+                                                buttonDisabled = false
                                             }
-                                            buttonDisabled = false
+                                            firestoreManager.removeMyFavorites(listingID: listing.id, completionHandler: results)
+                                        case false:
+                                            let results: (String) -> Void = { result in
+                                                if(result == "success"){
+                                                    
+                                                } else if(result != ""){
+                                                    
+                                                }
+                                                buttonDisabled = false
+                                            }
+                                            firestoreManager.addMyFavorites(listingID: listing.id, completionHandler: results)
                                         }
                                         
-                                        firestoreManager.addMyFavorites(listingID: listing.id, completionHandler: results)
+                                        
+                                        
                                     } label: {
-                                        Label("Favorite", systemImage: "star")
+                                        Label("Favorite", systemImage: listing.favorited ? "star.fill": "star")
                                             .labelStyle(.iconOnly)
                                     }
                                     .buttonStyle(.borderless)
                                     .disabled(buttonDisabled)
-
+                                    
+                                    
+                                    
                                     VStack(alignment: .leading) {
                                         Text(listing.name)
                                             .font(.headline)
@@ -75,7 +92,7 @@ struct HomeView: View {
                         }
                         
                     }
-                
+                    
                     
                 }
                 .navigationBarTitle("Home", displayMode: .automatic)
