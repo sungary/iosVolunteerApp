@@ -379,8 +379,24 @@ class FirestoreManager: ObservableObject {
                 completionHandler("error")
             } else {
                 //print("Listing successfully deleted")
-                self.fetchListingsUser()
-                completionHandler("success")
+                
+                // removes listing from users myListings array
+                let docRefUser = db.collection("users").document(Auth.auth().currentUser?.uid ?? "")
+                docRefUser.updateData([
+                    "myListings": FieldValue.arrayRemove([listingID])
+                ]) { err in
+                    if let err = err {
+                        print("Error adding my favorites \(err)")
+                        completionHandler("error")
+                    } else {
+                        //print("Listing successfully deleted")
+                        if let index = self.allListings.firstIndex(where: {$0.id == listingID}){
+                            self.allListings[index].favorited = false
+                        }
+                        self.fetchListingsUser()
+                        completionHandler("success")
+                    }
+                }
             }
         }
     }
