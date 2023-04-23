@@ -11,7 +11,7 @@ struct MyListingVolunteerView: View {
             NavigationView {
                 VStack {
                     List(firestoreManager.myListings) { listing in
-                        NavigationLink(destination: ViewListingView(listing: listing)) {
+                        NavigationLink(destination: ViewListingVolunteerView(listing: listing, user: user)) {
                             HStack {
                                 Button {
                                     buttonDisabled = true

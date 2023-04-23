@@ -260,7 +260,7 @@ class FirestoreManager: ObservableObject {
         return result
     }
     
-    //create a new document for the new user in the users collection
+    //create a new document for the new user in the users & user_info collection
     func createNewUserInfo(user: User, authResultUID: String) {
         let db = Firestore.firestore()
         let docRef = db.collection("users").document(authResultUID)
@@ -270,7 +270,22 @@ class FirestoreManager: ObservableObject {
             "fname": user.fname,
             "lname": user.lname,
             "myListings": [],
-            "type": user.type])
+            "type": user.type
+        ])
+        { error in
+            if(error != nil){
+                //print("error")
+            } else {
+                //print("success")
+            }
+        }
+        
+        let docRef2 = db.collection("user_info").document(user.id)
+        docRef2.setData([
+            "email": user.email,
+            "fname": user.fname,
+            "lname": user.lname
+        ])
         { error in
             if(error != nil){
                 //print("error")
@@ -365,6 +380,12 @@ class FirestoreManager: ObservableObject {
                     tempRef.updateData([
                         "myListings": FieldValue.arrayUnion([docID])
                     ])
+                    
+                    // create new document in listing_interest to keep track of volunteer users
+                    db.collection("listing_interest").document(docID).setData([
+                        "interest_list": []
+                    ])
+                    
                     completionHandler("success")
                 }
             }
@@ -414,11 +435,22 @@ class FirestoreManager: ObservableObject {
                         completionHandler("error")
                     } else {
                         //print("Listing successfully deleted")
-                        if let index = self.allListings.firstIndex(where: {$0.id == listingID}){
-                            self.allListings[index].favorited = false
+                        
+                        // delete document from listing_interest
+                        db.collection("listing_interest").document(listingID).delete() { err in
+                            if let err = err {
+                                print("Error removing document from listing_interest \(err)")
+                            } else {
+                                //print("document removed from listing_interest")
+                                if let index = self.allListings.firstIndex(where: {$0.id == listingID}){
+                                    self.allListings[index].favorited = false
+                                }
+                                self.fetchListingsUser()
+                                completionHandler("success")
+                            }
                         }
-                        self.fetchListingsUser()
-                        completionHandler("success")
+                        
+                        
                     }
                 }
             }
@@ -463,6 +495,78 @@ class FirestoreManager: ObservableObject {
                 }
                 self.fetchListingsUser()
                 completionHandler("success")
+            }
+        }
+    }
+    
+    func sendInterest(listingID: String, userID: String, completionHandler: @escaping (String) -> Void) {
+        let db = Firestore.firestore()
+        let docRef = db.collection("listing_interest").document(listingID)
+        docRef.updateData([
+            "interest_list": FieldValue.arrayUnion([userID])
+        ]) { err in
+            if let err = err {
+                print("Error adding to Interest \(err)")
+                completionHandler("error")
+            } else {
+                let results: (String) -> Void = { result in
+                    if(result == "success"){
+                        completionHandler("success")
+                    } else if(result != ""){
+                        completionHandler("error")
+                    }
+                }
+                // if interest is sent then add this listing to users favorites
+                self.addMyFavorites(listingID: listingID, completionHandler: results)
+            }
+        }
+    }
+    
+    func removeInterest(listingID: String, userID: String, completionHandler: @escaping (String) -> Void) {
+        let db = Firestore.firestore()
+        let docRef = db.collection("listing_interest").document(listingID)
+        
+        docRef.updateData([
+            "interest_list": FieldValue.arrayRemove([userID])
+        ]) { err in
+            if let err = err {
+                print("Error removing from Interest \(err)")
+                completionHandler("error")
+            } else {
+                let results: (String) -> Void = { result in
+                    if(result == "success"){
+                        completionHandler("success")
+                    } else if(result != ""){
+                        completionHandler("error")
+                    }
+                }
+                // if interest is removed then remove this from users favorites
+                self.removeMyFavorites(listingID: listingID, completionHandler: results)
+            }
+        }
+    }
+    
+    func checkInterest(listingID: String, userID: String, completionHandler: @escaping (String) -> Void) {
+        let db = Firestore.firestore()
+        let docRef = db.collection("listing_interest").document(listingID)
+        
+        docRef.getDocument{ (document, error) in
+            if let document = document, document.exists {
+                let data = document.data()
+                let arr: [String] = data?["interest_list"] as! [String]
+
+                if(arr.count > 0){
+                    if(arr.contains(userID)){
+                        completionHandler("success")
+                    } else  {
+                        completionHandler("none")
+                    }
+                } else {
+                    completionHandler("error")
+                }
+            } else {
+                print("Error getting document for checkInterest")
+                completionHandler("error")
             }
         }
     }

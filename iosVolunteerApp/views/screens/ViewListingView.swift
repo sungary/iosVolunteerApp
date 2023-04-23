@@ -10,7 +10,6 @@ import SwiftUI
 struct ViewListingView: View {
     
     let listing: Listing
-    let dateFormatter = DateFormatter()
     
     var body: some View {
         VStack(){

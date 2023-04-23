@@ -32,7 +32,7 @@ struct HomeView: View {
                         }
                     case "V":
                         List(firestoreManager.allListings) { listing in
-                            NavigationLink(destination: ViewListingView(listing: listing)) {
+                            NavigationLink(destination: ViewListingVolunteerView(listing: listing, user: user)) {
                                 HStack {
                                     Button {
                                         buttonDisabled = true

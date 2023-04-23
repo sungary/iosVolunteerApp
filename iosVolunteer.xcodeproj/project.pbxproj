@@ -26,6 +26,7 @@
 		A4D32EF42973A1F600EF829A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D32EF32973A1F600EF829A /* ContentView.swift */; };
 		A4D32EF62973A1FD00EF829A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A4D32EF52973A1FD00EF829A /* Assets.xcassets */; };
 		A4D32EF92973A1FD00EF829A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A4D32EF82973A1FD00EF829A /* Preview Assets.xcassets */; };
+		A4E6F53529F5D12000AC197B /* ViewListingVolunteerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4E6F53429F5D12000AC197B /* ViewListingVolunteerView.swift */; };
 		A4ED83CE297F7C0C00C4B860 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A4ED83CD297F7C0C00C4B860 /* GoogleService-Info.plist */; };
 		A4ED83D1297F7D8D00C4B860 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = A4ED83D0297F7D8D00C4B860 /* FirebaseAnalytics */; };
 		A4ED83D3297F7D8D00C4B860 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = A4ED83D2297F7D8D00C4B860 /* FirebaseAuth */; };
@@ -57,6 +58,7 @@
 		A4D32EF32973A1F600EF829A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		A4D32EF52973A1FD00EF829A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A4D32EF82973A1FD00EF829A /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		A4E6F53429F5D12000AC197B /* ViewListingVolunteerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewListingVolunteerView.swift; sourceTree = "<group>"; };
 		A4ED83CD297F7C0C00C4B860 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		A4ED83D8297F86ED00C4B860 /* listingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = listingsModel.swift; sourceTree = "<group>"; };
 		A4ED83DB297F8AD300C4B860 /* FirestoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreManager.swift; sourceTree = "<group>"; };
@@ -120,6 +122,7 @@
 				A4264A0B29B4039D004829BA /* AddListingView.swift */,
 				A4A3208629C7BF7D00134750 /* ViewListingEditView.swift */,
 				A4A3208829C7C14B00134750 /* ViewMyListingView.swift */,
+				A4E6F53429F5D12000AC197B /* ViewListingVolunteerView.swift */,
 			);
 			path = screens;
 			sourceTree = "<group>";
@@ -258,6 +261,7 @@
 				A4A3208729C7BF7D00134750 /* ViewListingEditView.swift in Sources */,
 				A4ED83D9297F86ED00C4B860 /* listingsModel.swift in Sources */,
 				A4264A0C29B4039D004829BA /* AddListingView.swift in Sources */,
+				A4E6F53529F5D12000AC197B /* ViewListingVolunteerView.swift in Sources */,
 				A43225C4298F272A002345C0 /* userModel.swift in Sources */,
 				A491A462299065320069008D /* LoginLoadingView.swift in Sources */,
 				A456FF8129AC072B00581E28 /* MyListingVolunteerView.swift in Sources */,
