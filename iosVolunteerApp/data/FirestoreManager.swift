@@ -215,6 +215,8 @@ class FirestoreManager: ObservableObject {
                             completionHandler("success")
                         }
                     }
+                } else if (arr.count == 0) {
+                    completionHandler("empty")
                 }
             }
         }
@@ -320,11 +322,7 @@ class FirestoreManager: ObservableObject {
                     )
                     
                     let results: (String) -> Void = { result in
-                        if(result == "success"){
-                            self.fetchListingsAll()
-                        } else if(result != ""){
-                            
-                        }
+                        self.fetchListingsAll()
                     }
                     self.fetchListingsUser(completionHandler: results)
                     //self.fetchListingsAll()
