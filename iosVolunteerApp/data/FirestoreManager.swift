@@ -282,7 +282,7 @@ class FirestoreManager: ObservableObject {
             }
         }
         
-        let docRef2 = db.collection("user_info").document(user.id)
+        let docRef2 = db.collection("users_info").document(user.id)
         docRef2.setData([
             "email": user.email,
             "fname": user.fname,
@@ -343,8 +343,8 @@ class FirestoreManager: ObservableObject {
         let firebaseAuth = Auth.auth()
         do {
             try firebaseAuth.signOut()
-            self.myListings.removeAll()
-            self.allListings.removeAll()
+            //self.myListings.removeAll()
+            //self.allListings.removeAll()
         } catch let signOutError as NSError {
             print("Error signing out: %@", signOutError)
         }
