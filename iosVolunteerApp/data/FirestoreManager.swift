@@ -353,6 +353,18 @@ class FirestoreManager: ObservableObject {
         
     }
     
+    func sendResetPasswordEmail(email: String, completionHandler: @escaping (String) -> Void) {
+        Auth.auth().sendPasswordReset(withEmail: email) { error in
+            if let error = error {
+                print("Error sending password reset email: \(error)")
+                completionHandler("error")
+            } else {
+                print("success sending password reset email")
+                completionHandler("success")
+            }
+        }
+    }
+    
     func createNewListing(createdBy: String, name: String, location: String, description: String, timeStart: Date, timeEnd: Date, completionHandler: @escaping (String) -> Void) {
         if(name != "" && location != "" && description != "") {
             let db = Firestore.firestore()

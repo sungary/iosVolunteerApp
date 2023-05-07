@@ -65,10 +65,13 @@ struct LoginView: View {
                             .tint(.green)
                             .disabled(buttonDisabled)
                     }
-                    Button(action: {print("button pressed")}) {
+                    NavigationLink(destination: PasswordResetView()){
                         Text("Forgot Password")
                     }
-                        .disabled(buttonDisabled)
+//                    Button(action: {print("button pressed")}) {
+//                        Text("Forgot Password")
+//                    }
+//                        .disabled(buttonDisabled)
                 }
                 .padding()
                 .padding(.bottom, 200)
