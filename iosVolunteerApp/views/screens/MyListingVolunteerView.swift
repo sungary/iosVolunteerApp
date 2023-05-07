@@ -79,6 +79,7 @@ struct MyListingVolunteerView: View {
                     }
                 }
             }
+            .navigationViewStyle(.stack)
         }
     }
 }

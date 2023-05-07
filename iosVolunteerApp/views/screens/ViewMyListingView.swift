@@ -37,9 +37,12 @@ struct ViewMyListingView: View {
                         Text(listing.timeEnd, style: .time)
                             .padding()
                     }
-                    
                     Text(listing.description)
                         .padding()
+                    
+                    NavigationLink(destination: InterestedView(listingID: listing.id)) {
+                        Text("View Interested")
+                    }
                 }
                 .navigationTitle(listing.name)
             }

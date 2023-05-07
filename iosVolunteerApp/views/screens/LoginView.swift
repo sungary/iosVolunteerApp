@@ -68,10 +68,6 @@ struct LoginView: View {
                     NavigationLink(destination: PasswordResetView()){
                         Text("Forgot Password")
                     }
-//                    Button(action: {print("button pressed")}) {
-//                        Text("Forgot Password")
-//                    }
-//                        .disabled(buttonDisabled)
                 }
                 .padding()
                 .padding(.bottom, 200)

@@ -70,7 +70,6 @@ struct ViewListingVolunteerView: View {
                     
                 }
             }) {
-                
                 if (self.isInterested) {
                     Text("Remove Interest")
                 } else {

@@ -37,6 +37,7 @@ struct ContentView: View {
                     }
                 }
             }
+            .navigationViewStyle(.stack)
             SideBar(navigationManager: self.$navigationManager)
         }
     }

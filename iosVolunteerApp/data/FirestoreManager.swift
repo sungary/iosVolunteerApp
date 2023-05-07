@@ -6,6 +6,7 @@ class FirestoreManager: ObservableObject {
     
     @Published var allListings = [Listing]()
     @Published var myListings = [Listing]()
+    @Published var interestList = [User]()
     
     func getCurrentUserID() async -> String {
         
@@ -356,10 +357,10 @@ class FirestoreManager: ObservableObject {
     func sendResetPasswordEmail(email: String, completionHandler: @escaping (String) -> Void) {
         Auth.auth().sendPasswordReset(withEmail: email) { error in
             if let error = error {
-                print("Error sending password reset email: \(error)")
-                completionHandler("error")
+                //print("Error sending password reset email: \(error)")
+                completionHandler("error: \(error)")
             } else {
-                print("success sending password reset email")
+                //print("success sending password reset email")
                 completionHandler("success")
             }
         }
@@ -380,8 +381,8 @@ class FirestoreManager: ObservableObject {
                 "createdOn": Timestamp(date: Date())
             ]) { err in
                 if let err = err {
-                    print("Error adding listing: \(err)")
-                    completionHandler("error adding listing")
+                    //print("Error adding listing: \(err)")
+                    completionHandler("error adding listing: \(err)")
                 } else {
                     // documented added sucessfully
                     // add document id to users listing array
@@ -577,6 +578,50 @@ class FirestoreManager: ObservableObject {
             } else {
                 print("Error getting document for checkInterest")
                 completionHandler("error")
+            }
+        }
+    }
+    
+    func getInterestedUsers(listingID: String){
+        let db = Firestore.firestore()
+        let docRef = db.collection("listing_interest").document(listingID)
+        
+        self.interestList.removeAll()
+        
+        docRef.getDocument{ (document, error) in
+            if let document = document, document.exists {
+                let data = document.data()
+                let arr: [String] = data?["interest_list"] as! [String]
+
+                for userID in arr {
+                    let docRefUser = db.collection("users_info").document(userID)
+                    docRefUser.getDocument{ (document, error) in
+                        if let document2 = document, document2.exists {
+                            let data = document2.data()
+                            
+                            if(data != nil){
+                                
+                                let user = User(
+                                    id: userID,
+                                    email: data?["email"] as? String ?? "",
+                                    fname: data?["fname"] as? String ?? "",
+                                    lname: data?["lname"] as? String ?? "",
+                                    type: "",
+                                    myListings: [],
+                                    isSignedIn: false
+                                )
+                                if(self.interestList.contains(where: {$0.id == userID})){
+                                    
+                                } else {
+                                    self.interestList.append(user)
+                                }
+                                
+                            }
+                        }
+                    }
+                }
+            } else {
+                print("Error getting list of interested users")
             }
         }
     }

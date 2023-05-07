@@ -55,6 +55,7 @@ struct MyListingOrganizationView: View {
                     }
                 }
             }
+            .navigationViewStyle(.stack)
         }
     }
 }

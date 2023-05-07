@@ -23,6 +23,7 @@
 		A4A3208729C7BF7D00134750 /* ViewListingEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4A3208629C7BF7D00134750 /* ViewListingEditView.swift */; };
 		A4A3208929C7C14B00134750 /* ViewMyListingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4A3208829C7C14B00134750 /* ViewMyListingView.swift */; };
 		A4C0C2242A083C32006D3E54 /* PasswordResetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4C0C2232A083C32006D3E54 /* PasswordResetView.swift */; };
+		A4C0C2262A084296006D3E54 /* InterestedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4C0C2252A084295006D3E54 /* InterestedView.swift */; };
 		A4D32EF22973A1F600EF829A /* iosVolunteerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D32EF12973A1F600EF829A /* iosVolunteerApp.swift */; };
 		A4D32EF42973A1F600EF829A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D32EF32973A1F600EF829A /* ContentView.swift */; };
 		A4D32EF62973A1FD00EF829A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A4D32EF52973A1FD00EF829A /* Assets.xcassets */; };
@@ -55,6 +56,7 @@
 		A4A3208629C7BF7D00134750 /* ViewListingEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewListingEditView.swift; sourceTree = "<group>"; };
 		A4A3208829C7C14B00134750 /* ViewMyListingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewMyListingView.swift; sourceTree = "<group>"; };
 		A4C0C2232A083C32006D3E54 /* PasswordResetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordResetView.swift; sourceTree = "<group>"; };
+		A4C0C2252A084295006D3E54 /* InterestedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterestedView.swift; sourceTree = "<group>"; };
 		A4D32EEE2973A1F600EF829A /* iosVolunteer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iosVolunteer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A4D32EF12973A1F600EF829A /* iosVolunteerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iosVolunteerApp.swift; sourceTree = "<group>"; };
 		A4D32EF32973A1F600EF829A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -126,6 +128,7 @@
 				A4A3208829C7C14B00134750 /* ViewMyListingView.swift */,
 				A4E6F53429F5D12000AC197B /* ViewListingVolunteerView.swift */,
 				A4C0C2232A083C32006D3E54 /* PasswordResetView.swift */,
+				A4C0C2252A084295006D3E54 /* InterestedView.swift */,
 			);
 			path = screens;
 			sourceTree = "<group>";
@@ -264,6 +267,7 @@
 				A4A3208729C7BF7D00134750 /* ViewListingEditView.swift in Sources */,
 				A4ED83D9297F86ED00C4B860 /* listingsModel.swift in Sources */,
 				A4264A0C29B4039D004829BA /* AddListingView.swift in Sources */,
+				A4C0C2262A084296006D3E54 /* InterestedView.swift in Sources */,
 				A4E6F53529F5D12000AC197B /* ViewListingVolunteerView.swift in Sources */,
 				A4C0C2242A083C32006D3E54 /* PasswordResetView.swift in Sources */,
 				A43225C4298F272A002345C0 /* userModel.swift in Sources */,
