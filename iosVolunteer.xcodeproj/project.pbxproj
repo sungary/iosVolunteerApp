@@ -14,6 +14,9 @@
 		A4379BFE297F6CFF00D6D8FE /* SideBarNavigationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4379BFC297F6CFF00D6D8FE /* SideBarNavigationManager.swift */; };
 		A4379BFF297F6CFF00D6D8FE /* SideBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4379BFD297F6CFF00D6D8FE /* SideBar.swift */; };
 		A4379C07297F6FF400D6D8FE /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4379C06297F6FF400D6D8FE /* HomeView.swift */; };
+		A44DB9B52A085ACA00617A81 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44DB9B42A085ACA00617A81 /* SettingsView.swift */; };
+		A44DB9B72A085B6200617A81 /* UpdateProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44DB9B62A085B6200617A81 /* UpdateProfileView.swift */; };
+		A44DB9B92A085CBE00617A81 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44DB9B82A085CBE00617A81 /* ProfileView.swift */; };
 		A456FF8129AC072B00581E28 /* MyListingVolunteerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A456FF8029AC072B00581E28 /* MyListingVolunteerView.swift */; };
 		A456FF8329AC07B200581E28 /* MyListingOrganizationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A456FF8229AC07B200581E28 /* MyListingOrganizationView.swift */; };
 		A456FF8529AC0D0100581E28 /* SignOutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A456FF8429AC0D0100581E28 /* SignOutView.swift */; };
@@ -47,6 +50,9 @@
 		A4379BFC297F6CFF00D6D8FE /* SideBarNavigationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideBarNavigationManager.swift; sourceTree = "<group>"; };
 		A4379BFD297F6CFF00D6D8FE /* SideBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideBar.swift; sourceTree = "<group>"; };
 		A4379C06297F6FF400D6D8FE /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		A44DB9B42A085ACA00617A81 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		A44DB9B62A085B6200617A81 /* UpdateProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateProfileView.swift; sourceTree = "<group>"; };
+		A44DB9B82A085CBE00617A81 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		A456FF8029AC072B00581E28 /* MyListingVolunteerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyListingVolunteerView.swift; sourceTree = "<group>"; };
 		A456FF8229AC07B200581E28 /* MyListingOrganizationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyListingOrganizationView.swift; sourceTree = "<group>"; };
 		A456FF8429AC0D0100581E28 /* SignOutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignOutView.swift; sourceTree = "<group>"; };
@@ -129,6 +135,9 @@
 				A4E6F53429F5D12000AC197B /* ViewListingVolunteerView.swift */,
 				A4C0C2232A083C32006D3E54 /* PasswordResetView.swift */,
 				A4C0C2252A084295006D3E54 /* InterestedView.swift */,
+				A44DB9B42A085ACA00617A81 /* SettingsView.swift */,
+				A44DB9B62A085B6200617A81 /* UpdateProfileView.swift */,
+				A44DB9B82A085CBE00617A81 /* ProfileView.swift */,
 			);
 			path = screens;
 			sourceTree = "<group>";
@@ -263,11 +272,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				A456FF8529AC0D0100581E28 /* SignOutView.swift in Sources */,
+				A44DB9B52A085ACA00617A81 /* SettingsView.swift in Sources */,
 				A47828ED2985F3ED0086F9F0 /* ViewListingView.swift in Sources */,
 				A4A3208729C7BF7D00134750 /* ViewListingEditView.swift in Sources */,
 				A4ED83D9297F86ED00C4B860 /* listingsModel.swift in Sources */,
 				A4264A0C29B4039D004829BA /* AddListingView.swift in Sources */,
 				A4C0C2262A084296006D3E54 /* InterestedView.swift in Sources */,
+				A44DB9B92A085CBE00617A81 /* ProfileView.swift in Sources */,
 				A4E6F53529F5D12000AC197B /* ViewListingVolunteerView.swift in Sources */,
 				A4C0C2242A083C32006D3E54 /* PasswordResetView.swift in Sources */,
 				A43225C4298F272A002345C0 /* userModel.swift in Sources */,
@@ -278,6 +289,7 @@
 				A43225C2298F1404002345C0 /* LoginView.swift in Sources */,
 				A43225C6298F2914002345C0 /* SignUpView.swift in Sources */,
 				A4D32EF42973A1F600EF829A /* ContentView.swift in Sources */,
+				A44DB9B72A085B6200617A81 /* UpdateProfileView.swift in Sources */,
 				A4D32EF22973A1F600EF829A /* iosVolunteerApp.swift in Sources */,
 				A4379C07297F6FF400D6D8FE /* HomeView.swift in Sources */,
 				A4379BFF297F6CFF00D6D8FE /* SideBar.swift in Sources */,

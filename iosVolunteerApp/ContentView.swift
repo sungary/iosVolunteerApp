@@ -28,7 +28,9 @@ struct ContentView: View {
                                 ErrorView()
                             }
                         case .settings:
-                            Text("test")
+                            SettingsView(navigationManager: $navigationManager)
+                        case .profile:
+                            ProfileView(user: $user, navigationManager: $navigationManager)
                         case .signOut:
                             SignOutView(user: $user, navigationManager: self.$navigationManager)
                         case .error:
