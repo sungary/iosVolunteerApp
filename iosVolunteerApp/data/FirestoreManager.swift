@@ -81,7 +81,7 @@ class FirestoreManager: ObservableObject {
                                 // stores the lisings into the myListings so that frontend can fetch it
                                 self.myListings.append(contentsOf: documentListing.map{ (queryDocumentSnapshot) -> Listing in
                                     let lisingData = queryDocumentSnapshot.data()
-
+                                    
                                     let id = queryDocumentSnapshot.documentID
                                     let name = lisingData["name"] as? String ?? ""
                                     let description = lisingData["description"] as? String ?? ""
@@ -105,13 +105,13 @@ class FirestoreManager: ObservableObject {
                         if let err = err {
                             print("error getting documents for my listing: \(err)")
                         } else {
-
+                            
                             let documentListing = querySnapshot!.documents
-
+                            
                             // stores the lisings into the myListings so that frontend can fetch it
                             self.myListings = documentListing.map{ (queryDocumentSnapshot) -> Listing in
                                 let lisingData = queryDocumentSnapshot.data()
-
+                                
                                 let id = queryDocumentSnapshot.documentID
                                 let name = lisingData["name"] as? String ?? ""
                                 let description = lisingData["description"] as? String ?? ""
@@ -168,7 +168,7 @@ class FirestoreManager: ObservableObject {
                                 // stores the lisings into the myListings so that frontend can fetch it
                                 self.myListings.append(contentsOf: documentListing.map{ (queryDocumentSnapshot) -> Listing in
                                     let lisingData = queryDocumentSnapshot.data()
-
+                                    
                                     let id = queryDocumentSnapshot.documentID
                                     let name = lisingData["name"] as? String ?? ""
                                     let description = lisingData["description"] as? String ?? ""
@@ -192,13 +192,13 @@ class FirestoreManager: ObservableObject {
                         if let err = err {
                             print("error getting documents for my listing: \(err)")
                         } else {
-
+                            
                             let documentListing = querySnapshot!.documents
-
+                            
                             // stores the lisings into the myListings so that frontend can fetch it
                             self.myListings = documentListing.map{ (queryDocumentSnapshot) -> Listing in
                                 let lisingData = queryDocumentSnapshot.data()
-
+                                
                                 let id = queryDocumentSnapshot.documentID
                                 let name = lisingData["name"] as? String ?? ""
                                 let description = lisingData["description"] as? String ?? ""
@@ -565,7 +565,7 @@ class FirestoreManager: ObservableObject {
             if let document = document, document.exists {
                 let data = document.data()
                 let arr: [String] = data?["interest_list"] as! [String]
-
+                
                 if(arr.count > 0){
                     if(arr.contains(userID)){
                         completionHandler("success")
@@ -592,7 +592,7 @@ class FirestoreManager: ObservableObject {
             if let document = document, document.exists {
                 let data = document.data()
                 let arr: [String] = data?["interest_list"] as! [String]
-
+                
                 for userID in arr {
                     let docRefUser = db.collection("users_info").document(userID)
                     docRefUser.getDocument{ (document, error) in
@@ -622,6 +622,43 @@ class FirestoreManager: ObservableObject {
                 }
             } else {
                 print("Error getting list of interested users")
+            }
+        }
+    }
+    
+    func updateUserInfo(userID: String, fName: String, lName: String, email: String, completionHandler: @escaping (String) -> Void){
+        let db = Firestore.firestore()
+        let docRefUser = db.collection("users_info").document(userID)
+        let docRef2 = db.collection("users").document(Auth.auth().currentUser?.uid ?? "")
+        
+        docRefUser.updateData([
+            "fname": fName,
+            "lname": lName,
+            "email": email
+        ]) { err in
+            if let err = err {
+                print("Error updating user info: \(err)")
+                completionHandler("error")
+            } else {
+                docRef2.updateData([
+                    "fname": fName,
+                    "lname": lName,
+                    "email": email
+                ]) { err2 in
+                    if let err2 = err {
+                        print("Error updating user info: \(err2)")
+                        completionHandler("error")
+                    } else {
+                        Auth.auth().currentUser?.updateEmail(to: email) { error in
+                            if let error = error {
+                                print("Error updating user email: \(error)")
+                                completionHandler("error")
+                            } else {
+                                completionHandler("success")
+                            }
+                        }
+                    }
+                }
             }
         }
     }

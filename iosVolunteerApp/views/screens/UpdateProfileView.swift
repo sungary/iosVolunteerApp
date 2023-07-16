@@ -10,15 +10,14 @@ import SwiftUI
 struct UpdateProfileView: View {
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject var firestoreManager: FirestoreManager
-
+    
     @Binding var user: User
     @State var fname: String = ""
     @State var lname: String = ""
     @State var email: String = ""
     
     enum AlertType {
-        case successDelete
-        case successUpdate
+        case success
         case error
     }
     @State private var alertType: AlertType?
@@ -30,6 +29,8 @@ struct UpdateProfileView: View {
             Text("Update Profile")
                 .font(.largeTitle)
                 .bold()
+            
+            Spacer()
             
             HStack(alignment: .center, spacing: nil){
                 TextField(text: $fname, prompt: Text("First Name")) {
@@ -63,17 +64,23 @@ struct UpdateProfileView: View {
             }
             
             Button {
-                print("test")
-                //                let results: (String) -> Void = { result in
-                //                    if(result == "success"){
-                //                        showAlert = true
-                //                        alertType = .successUpdate
-                //                    } else if(result != ""){
-                //                        showAlert = true
-                //                        alertType = .error
-                //                    }
-                //                    buttonDisabled = false
-                //                }
+                buttonDisabled = true
+                let results: (String) -> Void = { result in
+                    if(result == "success"){
+                        user.fname = self.fname
+                        user.lname = self.lname
+                        user.email = self.email
+                        
+                        showAlert = true
+                        alertType = .success
+                    } else if(result != ""){
+                        showAlert = true
+                        alertType = .error
+                    }
+                    buttonDisabled = false
+                }
+                
+                firestoreManager.updateUserInfo(userID: user.id, fName: fname, lName: lname, email: email, completionHandler: results)
                 
             } label: {
                 Text("Save")
@@ -85,31 +92,22 @@ struct UpdateProfileView: View {
             .alert(isPresented: $showAlert){
                 getPresentAlert()
             }
+            
+            Spacer()
         }
         .padding()
     }
     
     func getPresentAlert() -> Alert {
         switch alertType {
-        case .successDelete:
+        case .success:
             return Alert(
-                title: Text("Listing Deleted"),
+                title: Text("Info Updated"),
                 dismissButton: Alert.Button.default(
                     Text("OK"),
                     action: {
                         showAlert = false
-                        //isEditing = false
                         dismiss()
-                    })
-            )
-        case .successUpdate:
-            return Alert(
-                title: Text("Listing Updated"),
-                dismissButton: Alert.Button.default(
-                    Text("OK"),
-                    action: {
-                        //isEditing = false
-                        showAlert = false
                     })
             )
         case .error:
@@ -122,7 +120,6 @@ struct UpdateProfileView: View {
                         showAlert = false
                     })
             )
-
         case .none:
             return Alert(
                 title: Text("Error"),
@@ -138,7 +135,6 @@ struct UpdateProfileView: View {
 
 struct UpdateProfileView_Previews: PreviewProvider {
     @State static var user = User(id: "", email: "", fname: "", lname: "", type: "", myListings: [] as [String], isSignedIn: false)
-    @State static var test3: Bool = true
     static var previews: some View {
         UpdateProfileView(user: $user)
             .environmentObject(FirestoreManager())
