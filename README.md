@@ -9,8 +9,15 @@ Some of the main features include:
 - Organizations can view a list of users interested in listings
 
 ## Install / Setup 
-You will need your own **GoogleService-Info.plist** to get the application working. The file can be added to the root folder of the project. 
-For detailed steps on getting the file, please visit the [Firebase Setup](https://firebase.google.com/docs/ios/setup)
+A Firebase account is needed. [Firebase](https://firebase.google.com/)
+
+Create a Firebase project using [Cloud Firestore Database](https://firebase.google.com/docs/firestore/quickstart) and [Authentication](https://firebase.google.com/docs/auth/ios/start)
+
+Connect your Firebase Project to your app with **GoogleService-Info.plist**. The file can be added to the root folder of the project. 
+
+For detailed steps on getting the file and setting the project up, please visit [Firebase Setup](https://firebase.google.com/docs/ios/setup)
+
+
 
 ## License
 This project is licensed under the MIT License - see the LICENSE file for details
