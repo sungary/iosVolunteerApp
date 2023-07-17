@@ -42,6 +42,23 @@ struct HomeView: View {
                                             let results: (String) -> Void = { result in
                                                 if(result == "success"){
                                                     
+                                                    let resultOfCheck: (String) -> Void = { result2 in
+                                                        if (result2 == "success"){
+                                                            let resultOfRemove: (String) -> Void = { result3 in
+                                                                if (result3 == "success"){
+                                                                    
+                                                                } else {
+                                                                    
+                                                                }
+                                                                
+                                                            }
+                                                            firestoreManager.removeInterest(listingID: listing.id, userID: user.id, completionHandler: resultOfRemove)
+                                                        } else {
+                                                            
+                                                        }
+                                                    }
+                                                    
+                                                    firestoreManager.checkInterest(listingID: listing.id, userID: user.id, completionHandler: resultOfCheck)
                                                 } else if(result != ""){
                                                     
                                                 }

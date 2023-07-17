@@ -43,6 +43,9 @@ struct ViewMyListingView: View {
                     NavigationLink(destination: InterestedView(listingID: listing.id)) {
                         Text("View Interested")
                     }
+                    .buttonStyle(.bordered)
+                    .cornerRadius(25)
+                    .tint(.blue)
                 }
                 .navigationTitle(listing.name)
             }

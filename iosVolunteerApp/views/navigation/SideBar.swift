@@ -10,9 +10,9 @@ struct MenuItem: Identifiable {
 var menuData: [MenuItem] = [
     MenuItem(id:0, icon: "house", text: "Home", view: .home),
     MenuItem(id:1, icon: "books.vertical", text: "My Listings", view: .myListing),
-    MenuItem(id:2, icon: "gearshape", text: "Settings", view: .settings),
-    MenuItem(id:3, icon: "gearshape", text: "Profile", view: .profile),
-    MenuItem(id:4, icon: "gearshape", text: "Sign Out", view: .signOut)
+    MenuItem(id:2, icon: "person", text: "Profile", view: .profile),
+    MenuItem(id:3, icon: "gearshape", text: "Settings", view: .settings),
+    MenuItem(id:4, icon: "door.left.hand.open", text: "Sign Out", view: .signOut)
 ]
 
 struct SideBar: View {

@@ -615,7 +615,6 @@ class FirestoreManager: ObservableObject {
                                 } else {
                                     self.interestList.append(user)
                                 }
-                                
                             }
                         }
                     }
